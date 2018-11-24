@@ -1,0 +1,40 @@
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java-library'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    version = '1.0'
+
+    apply plugin: 'java'
+
+    version = '1.8'
+
+    dependencies {
+        implementation 'it.unibo.alice.tuprolog:tuprolog:3.2.1'
+
+        build.finalizedBy javadoc
+    }
+
+    javadoc{"${buildDir}/docs"}
+
+    /*shadowJar {
+        baseName = 'PPS-17-cml'
+        classifier = project.name
+        version = '1.0'
+        mergeServiceFiles('reference.conf')
+        destinationDir = file("${rootDir}/distributions") 
+    }*/
+}
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        jcenter()
+    }
+}

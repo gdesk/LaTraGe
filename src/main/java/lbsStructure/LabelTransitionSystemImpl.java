@@ -10,9 +10,15 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
     private Map<Integer, List<TransitionState>> labelTransitionSystem;
     private List<State> allStates;
 
+    private boolean isFirst = true;
+
     public LabelTransitionSystemImpl(){
-        this.labelTransitionSystem = new HashMap<>();
-        this.allStates = new ArrayList<>();
+        if(isFirst){
+            this.labelTransitionSystem = new HashMap<>();
+            this.allStates = new ArrayList<>();
+        }
+        isFirst = false;
+
     }
 
     @Override
@@ -32,11 +38,15 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
     @Override
     public void addTransitionState(final int level, final TransitionState transition) {
         if(labelTransitionSystem.containsKey(level)){
+            System.out.println("In LTS ---> up " + level );
             labelTransitionSystem.get(level).add(transition);
         }else{
+            System.out.println("In LTS ---> down" );
             List<TransitionState> listAtLevel = new ArrayList<>();
             listAtLevel.add(transition);
+            System.out.println("transitions: " + transition.getFinalState().getValueState());
             labelTransitionSystem.put(level, listAtLevel);
+            System.out.println("In LTS ---> upup" + labelTransitionSystem.toString() + " list " + listAtLevel.get(0).getFinalState().getValueState() );
         }
     }
 

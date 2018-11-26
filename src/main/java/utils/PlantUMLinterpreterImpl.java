@@ -46,7 +46,7 @@ public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
         final Map<Integer, List<TransitionState>> transictions = ltsStructures.getLabelTransitionSystem();
         transictions.forEach((level, states) ->{
             if(level == 0){
-                plantUML.concat("[*] --> "+ states.get(0).getInitialState());
+                plantUML.concat("[*] --> "+ states.get(0).getFinalState());
             }else {
                 plantUML.concat("\n");
                 states.forEach(transition -> {

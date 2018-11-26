@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StateImpl implements State {
 
-    private List<State> allStates;
+    private LabelTransitionSystem allStates;
     private String id;
     private String valueState;
     private int level;
@@ -14,13 +14,8 @@ public class StateImpl implements State {
         this.id = id;
         this.valueState = valueState;
         this.level = level;
-        this.allStates = new ArrayList<>();
-        allStates.add(new StateImpl(id, valueState,level));
-    }
-
-    @Override
-    public List<State> getAllStates(){
-        return allStates;
+        this.allStates = new LabelTransitionSystemImpl();
+        this.allStates.addState(new StateImpl(id, valueState,level));
     }
 
     @Override

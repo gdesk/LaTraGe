@@ -8,9 +8,20 @@ import java.util.Map;
 public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
     private Map<Integer, List<TransitionState>> labelTransitionSystem;
+    private List<State> allStates;
 
     public LabelTransitionSystemImpl(){
         this.labelTransitionSystem = new HashMap<>();
+        this.allStates = new ArrayList<>();
+    }
+
+    @Override
+    public List<State> getAllStates() {
+        return allStates;
+    }
+    @Override
+    public void addState(State state){
+        allStates.add(state);
     }
 
     @Override

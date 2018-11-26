@@ -9,6 +9,11 @@ public class CounterImpl implements Counter {
     }
 
     @Override
+    public int getCounter() {
+        return counter;
+    }
+
+    @Override
     public void increment() {
         counter++;
     }

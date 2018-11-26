@@ -1,8 +1,12 @@
 package utils;
 
+import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PlantUMLutilsImpl implements PlantUMLutils {
@@ -10,16 +14,14 @@ public class PlantUMLutilsImpl implements PlantUMLutils {
     private PlantUMLinterpreter plantUMLinterpreter  = new PlantUMLinterpreterImpl();
 
     @Override
-    public void generateImage(){
-        File png = new File("LTSimage.png");
-        String source = plantUMLinterpreter.createPlantUML() ;
+    public void generateImage() throws IOException {
+        StringBuilder plantUmlSource = plantUMLinterpreter.createPlantUML();
 
-        SourceStringReader reader = new SourceStringReader(source);
-        try {
-            reader.generateImage(png);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SourceStringReader reader = new SourceStringReader(plantUmlSource.toString());
+
+        FileOutputStream output = new FileOutputStream(new File("LTSimage.png"));
+
+        reader.generateImage(output);
 
     }
 }

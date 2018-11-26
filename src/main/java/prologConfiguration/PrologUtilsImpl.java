@@ -17,6 +17,11 @@ public class PrologUtilsImpl implements PrologUtils {
     }
 
     @Override
+    public Prolog getEngine() {
+        return engine;
+    }
+
+    @Override
     public SolveInfo solveGoal(final String goal) {
 
         SolveInfo solution = null;

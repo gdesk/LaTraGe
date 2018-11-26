@@ -1,7 +1,10 @@
 package utils;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public interface PlantUMLutils {
 
-    public void generateImage();
+    void generateImage() throws IOException;
 
 }

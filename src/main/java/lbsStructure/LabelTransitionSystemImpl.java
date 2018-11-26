@@ -7,18 +7,17 @@ import java.util.Map;
 
 public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
-    private Map<Integer, List<TransitionState>> labelTransitionSystem;
-    private List<State> allStates;
+    private static LabelTransitionSystemImpl istance=null; //riferimento all' istanza
 
-    private boolean isFirst = true;
+    private Map<Integer, List<TransitionState>> labelTransitionSystem = new HashMap<>();;
+    private List<State> allStates = new ArrayList<>();
 
-    public LabelTransitionSystemImpl(){
-        if(isFirst){
-            this.labelTransitionSystem = new HashMap<>();
-            this.allStates = new ArrayList<>();
-        }
-        isFirst = false;
+    public LabelTransitionSystemImpl(){}
 
+    public static LabelTransitionSystemImpl getIstance() {
+        if(istance==null)
+            istance = new LabelTransitionSystemImpl();
+        return istance;
     }
 
     @Override
@@ -44,9 +43,8 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
             System.out.println("In LTS ---> down" );
             List<TransitionState> listAtLevel = new ArrayList<>();
             listAtLevel.add(transition);
-            System.out.println("transitions: " + transition.getFinalState().getValueState());
+            System.out.println("transitions: " + transition.getFinalState().getId());
             labelTransitionSystem.put(level, listAtLevel);
-            System.out.println("In LTS ---> upup" + labelTransitionSystem.toString() + " list " + listAtLevel.get(0).getFinalState().getValueState() );
         }
     }
 

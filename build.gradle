@@ -16,6 +16,9 @@ allprojects {
     dependencies {
         implementation 'it.unibo.alice.tuprolog:tuprolog:3.2.1'
         implementation group: 'net.sourceforge.plantuml', name: 'plantuml', version: '6703'
+        // https://mvnrepository.com/artifact/com.simonharrer.graphviz/com.simonharrer.graphviz.gradle.plugin
+        implementation group: 'com.simonharrer.graphviz', name: 'com.simonharrer.graphviz.gradle.plugin', version: '0.0.1', ext: 'pom'
+
 
 
         build.finalizedBy javadoc

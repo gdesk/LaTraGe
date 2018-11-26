@@ -3,6 +3,7 @@ package lbsStructure;
 public class StateImpl implements State {
 
     private String valueState;
+    private String id;
     private int numberId;
     private int level;
 
@@ -10,12 +11,12 @@ public class StateImpl implements State {
         this.valueState = valueState;
         this.level = level;
         this.numberId=0;
+        this.id = "s"+numberId;
+        numberId++;
     }
 
     @Override
     public String getId() {
-        String id=  "s"+numberId;
-        numberId++;
         return id;
     }
 

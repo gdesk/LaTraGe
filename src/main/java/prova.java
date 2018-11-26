@@ -1,5 +1,11 @@
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import lbsStructure.*;
 import utils.PlantUMLinterpreter;
+import utils.PlantUMLinterpreterImpl;
+import utils.PlantUMLutils;
+import utils.PlantUMLutilsImpl;
+
+import javax.sound.midi.SysexMessage;
 
 
 public class prova {
@@ -8,15 +14,18 @@ public class prova {
 
         final String input = args[0];
 
-        StateImpl root = new StateImpl(input, 0);
-        LabelTransitionSystem labelTransitionSystem = new LabelTransitionSystemImpl();
+        final LabelTransitionSystemImpl labelTransitionSystem = LabelTransitionSystemImpl.getIstance();
+        final StateImpl root = new StateImpl(input, 0);
+        final TransitionState rootTransition = new TransitionStateImpl(null, root, "");
+
         labelTransitionSystem.addState(root);
-        labelTransitionSystem.addTransitionState(0, new TransitionStateImpl(null, root, null));
-        System.out.println("LTS " +labelTransitionSystem.getLabelTransitionSystem().get(0));
+        labelTransitionSystem.addTransitionState(0, rootTransition );
+
         LTSComputing ltsComputing = new LTSComputing();
         ltsComputing.computeState();
 
 
-        System.out.println("PlantUmlInterpreter: \n " + PlantUMLinterpreter.class);
+        PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
+        plantUMLutils.generateImage();
     }
 }

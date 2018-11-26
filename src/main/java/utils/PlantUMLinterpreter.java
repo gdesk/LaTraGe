@@ -1,5 +1,5 @@
 package utils;
 
 public interface PlantUMLinterpreter {
-    String createPlantUML();
+    StringBuilder createPlantUML();
 }

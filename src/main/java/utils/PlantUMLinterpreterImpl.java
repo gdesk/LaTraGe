@@ -10,21 +10,25 @@ import java.util.Map;
 
 public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
 
-    private LabelTransitionSystem ltsStructures = new LabelTransitionSystemImpl();
-    private String plantUML;
+    private LabelTransitionSystem ltsStructures = LabelTransitionSystemImpl.getIstance();
+    private StringBuilder plantUML;
+
+    public PlantUMLinterpreterImpl(){
+        this.plantUML = new StringBuilder();
+        startingConfiguration();
+
+    }
 
     @Override
-    public String createPlantUML() {
-        plantUML.concat("@startuml\n");
-        startingConfiguration();
+    public StringBuilder createPlantUML() {
         appendAllState();
         appendTransition();
-        plantUML.concat("\n@enduml");
         return plantUML;
     }
 
     private void startingConfiguration(){
-        plantUML.concat("skinparam DefaultFontSize 20\n" +
+        plantUML.append("@startuml\n " +
+                "skinparam DefaultFontSize 20\n" +
                 "skinparam StateFontStyle italics\n" +
                 "skinparam DefaultFontName Courier\n" +
                 "hide empty description\n" +
@@ -38,22 +42,24 @@ public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
     private void appendAllState(){
         final List<State> allState = ltsStructures.getAllStates();
         allState.forEach(state -> {
-            plantUML.concat("state "+ state.getId()+": "+state.getValueState()+"\n");
+            plantUML = plantUML.append(state.getId()+" : "+state.getValueState()+"\n");
         });
+        plantUML = plantUML.append("\n");
     }
 
     private void appendTransition(){
         final Map<Integer, List<TransitionState>> transictions = ltsStructures.getLabelTransitionSystem();
         transictions.forEach((level, states) ->{
             if(level == 0){
-                plantUML.concat("[*] --> "+ states.get(0).getFinalState());
+                plantUML = plantUML.append("[*] --> "+ states.get(0).getFinalState().getId());
             }else {
-                plantUML.concat("\n");
+                plantUML =plantUML.append("\n");
                 states.forEach(transition -> {
-                    plantUML.concat(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ transition.getEvent());
+                    plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ transition.getEvent()+"\n");
                 });
             }
 
         });
+        plantUML =plantUML.append("\n@enduml");
     }
 }

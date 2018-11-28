@@ -37,10 +37,10 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
     @Override
     public void addTransitionState(final int level, final TransitionState transition) {
         if(labelTransitionSystem.containsKey(level)){
-            System.out.println("In LTS ---> up " + level );
+            System.out.println("In LTS ---> già  creata la lista" + level );
             labelTransitionSystem.get(level).add(transition);
         }else{
-            System.out.println("In LTS ---> down" );
+            System.out.println("In LTS ---> creo nuova lista" );
             List<TransitionState> listAtLevel = new ArrayList<>();
             listAtLevel.add(transition);
             System.out.println("transitions: " + transition.getFinalState().getId());

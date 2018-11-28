@@ -27,16 +27,12 @@ public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
     }
 
     private void startingConfiguration(){
-        plantUML.append("@startuml\n " +
+        plantUML.append("@startuml\n "+
                 "skinparam DefaultFontSize 20\n" +
                 "skinparam StateFontStyle italics\n" +
                 "skinparam DefaultFontName Courier\n" +
                 "hide empty description\n" +
-                "\n" +
-                "skinparam state {\n" +
-                "  BackgroundColor<<Ending>> olive\n" +
-                "  BackgroundColor<<Unexplored>> yellow\n" +
-                "}\n\n");
+                "\n");
     }
 
     private void appendAllState(){

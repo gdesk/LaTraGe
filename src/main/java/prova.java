@@ -14,6 +14,7 @@ public class prova {
 
         final String input = args[0];
 
+
         final LabelTransitionSystemImpl labelTransitionSystem = LabelTransitionSystemImpl.getIstance();
         final StateImpl root = new StateImpl(input, 0);
         final TransitionState rootTransition = new TransitionStateImpl(null, root, "");
@@ -21,6 +22,11 @@ public class prova {
         labelTransitionSystem.addState(root);
         labelTransitionSystem.addTransitionState(0, rootTransition );
 
+        if(input.contains("par")){
+
+        }else{
+
+        }
         LTSComputing ltsComputing = new LTSComputing();
         ltsComputing.computeState();
 

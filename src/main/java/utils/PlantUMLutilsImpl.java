@@ -16,6 +16,7 @@ public class PlantUMLutilsImpl implements PlantUMLutils {
     @Override
     public void generateImage() throws IOException {
         StringBuilder plantUmlSource = plantUMLinterpreter.createPlantUML();
+        System.out.println(plantUmlSource.toString());
 
         SourceStringReader reader = new SourceStringReader(plantUmlSource.toString());
 

@@ -23,16 +23,16 @@ list2dot(dot(H, dot(HH,T)),[H|T1]):-
 
 /**/
 dropElement(X,[X|T],T).
-dropElement(X,[H|Xs],L):-dropElement(X,Xs,L),!.
+dropElement(X,[H|Xs],L):-dropElement(X,Xs,L).
 
 /**/
 rule_parallel(IS, EV, FS) :-
 	par2list(IS, L),
 	member([X|PP], L),
 	EV=X,
-	/*delete([X|PP], L, NL),
- 	list2par(NL, PPS),*/
- 	FS = PP.
+	delete(X, L, NL),
+ 	list2par(NL, PPS),
+ 	FS = PPS.
 
 
 rule_dot(IS, EV, FS) :-
@@ -40,6 +40,7 @@ rule_dot(IS, EV, FS) :-
 	/*member(X, L),
 	EV=X,*/
 	dropElement(X, L, NL),
+	EV=X,
  	FS = NL.
 
 %par2list(par([a], par([e])), L), member([X | P1], L).

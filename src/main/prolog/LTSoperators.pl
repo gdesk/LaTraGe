@@ -6,9 +6,14 @@
 
 /* This function converts the sequence of parallel operator into list.
    par2list(+sequence of parallel operator,-process parallel's list).*/
-par2list(par(H, par(HH)),[H,HH]).
-par2list(par(H, par(HH,T)),[H|T1]):-
-	par2list(par(HH,T),T1).
+par22list(par(H, par(HH)),[H,HH]).
+par22list(par(H, par(HH,T)),[H|T1]):-
+	par22list(par(HH,T),T1).
+
+par2list(par(X),[X]).
+par2list(par(X,Y), [X|Z]):-
+	par2list(Y,Z).
+	
 
 /* This function converts the process's sequence into parallel operator's sequence.
    list2par(+process parallel's list, -sequence of parallel operator).*/
@@ -21,18 +26,25 @@ list2dot(dot(H, dot(HH)),[H,HH]).
 list2dot(dot(H, dot(HH,T)),[H|T1]):-
 	list2dot(dot(HH,T),T1).
 
+list2list(L,Z,Y),
+	member(X, L),
+	list2dot(X,K),
+	Y=K.
+
+
+
 /**/
 dropElement(X,[X|T],T).
 dropElement(X,[H|Xs],L):-dropElement(X,Xs,L).
 
 /**/
 rule_parallel(IS, EV, FS) :-
-	par2list(IS, L),
-	member([X|PP], L),
+	%par2list(IS, L),
+	member([X|PP], IS),
 	EV=X,
-	delete(X, L, NL),
- 	list2par(NL, PPS),
- 	FS = PPS.
+	/*delete(X, L, NL),
+ 	list2par(NL, PPS),*/
+ 	FS = PP.
 
 
 rule_dot(IS, EV, FS) :-

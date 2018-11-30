@@ -38,7 +38,7 @@ public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
     private void appendAllState(){
         final List<State> allState = ltsStructures.getAllStates();
         allState.forEach(state -> {
-            plantUML = plantUML.append(state.getId()+" : "+state.getValueState()+"\n");
+            if(!state.getValueState().isEmpty()) plantUML = plantUML.append(state.getId()+" : "+state.getValueState()+"\n");
         });
         plantUML = plantUML.append("\n");
     }
@@ -51,6 +51,7 @@ public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
             }else {
                 plantUML =plantUML.append("\n");
                 states.forEach(transition -> {
+                    if(!transition.getFinalState().getValueState().isEmpty())
                     plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ transition.getEvent()+"\n");
                 });
             }

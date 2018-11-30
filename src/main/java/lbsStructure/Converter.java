@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Converter {
 
-    List<String> inputList = new ArrayList<String>();
-    PrologUtils prologUtils = new PrologUtilsImpl("src/main/prolog/LTSoperators.pl");
+    private List<String> inputList = new ArrayList<String>();
+    private PrologUtils prologUtils = new PrologUtilsImpl("src/main/prolog/LTSoperators.pl");
 
     public Converter() throws IOException, InvalidTheoryException {
     }
@@ -52,9 +52,7 @@ public class Converter {
         String valueState="[";
         SolveInfo info1 = prologUtils.solveGoal("member(X," + prologoutput + "), list2dot(X,K).");
         if (info1.isSuccess()) {
-            System.out.println("CONVERTER CLASS---------------------:" + info1.getSolution());
             valueState = valueState.concat(info1.getTerm("K").toString() + ",");
-
             while (prologUtils.getEngine().hasOpenAlternatives()) {
                 SolveInfo info2 = prologUtils.getEngine().solveNext();
                 if (info2.isSuccess()) {
@@ -62,12 +60,15 @@ public class Converter {
                 }
             }
         }
-        valueState = valueState.substring(0, valueState.length() - 1).concat("]");
-        SolveInfo info = prologUtils.solveGoal("list2par(" + valueState + ",L).");
-        if (info.isSuccess()) {
-            parSequence = info.getTerm("L").toString();
-            System.out.println("list2par  " + parSequence);
+        System.out.println("value state - " + valueState);
+        if (!valueState.equals("[")) {
+            valueState = valueState.substring(0, valueState.length() - 1).concat("]");
+            SolveInfo info = prologUtils.solveGoal("list2par(" + valueState + ", L).");
+            if (info.isSuccess()) {
+                parSequence = info.getTerm("L").toString();
+            }
         }
+        System.out.println("par seqqqqqqqqqqqqqqqqqqqqqqqqqq " + parSequence);
         return parSequence;
 
     }

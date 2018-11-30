@@ -40,30 +40,30 @@ public class LTSComputing {
             List<TransitionState> listAtLevel = getListAtLevel();
             for (TransitionState s : listAtLevel) {
                 String goal = RULE + converter.inputConverter(s.getFinalState().getValueState(), inputCompute) + COMMA + EVENT + COMMA + FINAL_STATE + CLOSE_ROUND + DOT;
-                System.out.println("GOAL" + goal);
-                System.out.println("listaaaa  ---------------------- " + converter.getinputList());
+                //System.out.println("GOAL" + goal);
+                //System.out.println("listaaaa  ---------------------- " + converter.getinputList());
                 SolveInfo info = prologUtils.solveGoal(goal);
-                System.out.println("info "+ info);
+                //System.out.println("info "+ info);
                 if (info.isSuccess()) {
                     converter.getinputList().set(0, info.getTerm("FS").toString());
                     String valueState =converter.outputConverter(converter.getinputList().toString());
-                    System.out.println("listaaaa  ---------------------- " + converter.getinputList());
-                    System.out.println("valueState" + valueState);
+                    //System.out.println("listaaaa  ---------------------- " + converter.getinputList());
+                    //System.out.println("valueState" + valueState);
                     StateImpl state = createNewState(valueState);
-                    System.out.println("NEW STATE 0   " + state.getId() + " - " + state.getValueState());
+                    //System.out.println("NEW STATE 0   " + state.getId() + " - " + state.getValueState());
                     labelTransitionSystem.addState(state);
                     addTransitionInLTS(s, state, info);
                     int index = 1;
                     while (prologUtils.getEngine().hasOpenAlternatives()) {
                         SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
-                        System.out.println("solveinfo alternativ   " + recursiveInfo);
+                        //System.out.println("solveinfo alternativ   " + recursiveInfo);
                         if (recursiveInfo.isSuccess()) {
                             converter.getinputList().set(index, recursiveInfo.getTerm("FS").toString());
-                            System.out.println("listaaaa  ---------------------- " + converter.getinputList());
+                            //System.out.println("listaaaa  ---------------------- " + converter.getinputList());
                             String valueState1 =converter.outputConverter(converter.getinputList().toString());
-                            System.out.println("valueState" + valueState1);
+                            //System.out.println("valueState" + valueState1);
                             StateImpl recursiveStates = createNewState(valueState1);
-                            System.out.println("NEW STATE" + index + " " + recursiveStates.getId() + " - " + recursiveStates.getValueState());
+                            //System.out.println("NEW STATE" + index + " " + recursiveStates.getId() + " - " + recursiveStates.getValueState());
                             labelTransitionSystem.addState(recursiveStates);
                             addTransitionInLTS(s, recursiveStates, recursiveInfo);
                         }
@@ -72,8 +72,8 @@ public class LTSComputing {
                 }
             }
             level.increment();
-            System.out.print("count inc " + level.getCounter());
-          //  computeState();
+            //System.out.print("count inc " + level.getCounter());
+          //computeState();
         }
     }
 

@@ -16,12 +16,9 @@ public class PlantUMLutilsImpl implements PlantUMLutils {
     @Override
     public void generateImage() throws IOException {
         StringBuilder plantUmlSource = plantUMLinterpreter.createPlantUML();
-        System.out.println(plantUmlSource.toString());
-
+        System.out.println("PlantUML: " + plantUmlSource.toString());
         SourceStringReader reader = new SourceStringReader(plantUmlSource.toString());
-
         FileOutputStream output = new FileOutputStream(new File("LTSimage.png"));
-
         reader.generateImage(output);
 
     }

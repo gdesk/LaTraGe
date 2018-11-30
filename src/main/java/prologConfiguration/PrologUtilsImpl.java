@@ -28,7 +28,7 @@ public class PrologUtilsImpl implements PrologUtils {
         try {
             solution =  engine.solve(goal);
         } catch (MalformedGoalException e) {
-            System.out.println("ERROR - Malformed goal");
+            System.out.println("ERROR - Malformed goal /n");
         }
         return solution;
     }
@@ -40,7 +40,7 @@ public class PrologUtilsImpl implements PrologUtils {
         try {
              isSuccess = engine.solve(goal).isSuccess();
         } catch (MalformedGoalException e) {
-            System.out.println("ERROR - Malformed goal");
+            System.out.println("ERROR - Malformed goal /n");
         }
         return isSuccess;
     }

@@ -9,12 +9,10 @@ public class StateImpl implements State {
 
     private String valueState;
     private String id;
-    private Counter numberId =  new CounterImpl();
     private int level;
-    private StateID stateID;
 
     public StateImpl(String valueState, int level) {
-        this.stateID = StateIDImpl.getIstance();
+        StateID stateID = StateIDImpl.getIstance();
         this.valueState = valueState;
         this.level = level;
         this.id = stateID.createStateID();

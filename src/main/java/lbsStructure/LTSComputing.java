@@ -5,121 +5,80 @@ import prologConfiguration.PrologUtils;
 import prologConfiguration.PrologUtilsImpl;
 import utils.Counter;
 import utils.CounterImpl;
-
-import javax.sound.midi.SysexMessage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 
 public class LTSComputing {
 
-    private int level;
+    private final static String PROLOG_PATH = "src/main/prolog/LTSoperators.pl";
+    private final static String RULE = "rule_parallel(";
+    private final static String EVENT = "EV";
+    private final static String FINAL_STATE = "FS";
+    private final static String COMMA = ", ";
+    private final static String DOT = ".";
+    private final static String CLOSE_ROUND = ")";
+
     private LabelTransitionSystemImpl labelTransitionSystem;
     private PrologUtils prologUtils;
-    private Counter level1;
-    private List<String> javaList;
+    private Counter level;
     private String inputCompute;
 
     public LTSComputing() throws IOException, InvalidTheoryException {
-        level1 = new CounterImpl();
-        level = 0;
-        prologUtils = new PrologUtilsImpl("src/main/prolog/LTSoperators.pl");
+        level = new CounterImpl();
+        prologUtils = new PrologUtilsImpl(PROLOG_PATH);
         labelTransitionSystem = LabelTransitionSystemImpl.getIstance();
         inputCompute="[";
     }
 
     /* RICORDAAAAAA : la transition della radice è messa solo in final state*/
     public void computeState() throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
-        if(labelTransitionSystem.getLabelTransitionSystem().size()-1 <= level1.getCounter()) {
-            List<TransitionState> listAtLevel = labelTransitionSystem.getLabelTransitionSystem().get(level1.getCounter());
-            Iterator<TransitionState> iterator = listAtLevel.iterator();
-            while (iterator.hasNext()) {
-                TransitionState s = iterator.next();
-
-                SolveInfo info = prologUtils.solveGoal("rule_parallel(" + inputConverter(s.getFinalState().getValueState()) +", EV, FS).");
+        if(labelTransitionSystem.getLabelTransitionSystem().size()-1 <= level.getCounter()) {
+            List<TransitionState> listAtLevel = getListAtLevel();
+            for (TransitionState s : listAtLevel) {
+                SolveInfo info = prologUtils.solveGoal(RULE + Converter.inputConverter(s.getFinalState().
+                        getValueState(), inputCompute, prologUtils) + COMMA + EVENT + COMMA + FINAL_STATE + CLOSE_ROUND + DOT);
                 System.out.println("ENTRA IN ITERATOR   "+ inputCompute);
                 System.out.println("ENTRA IN PROLOG with info  --- " + info);
-                if (info.isSuccess()) {
+                if (isPrologGoalSuccess(info)) {
                     System.out.println("ENTRA IN WHILE PER SI.");
                     System.out.println("info  "+ info);
-                    StateImpl state = new StateImpl(info.getTerm("FS").toString(), level1.getCounter() + 1);
+                    StateImpl state = createNewState(info);
                     labelTransitionSystem.addState(state);
-                    labelTransitionSystem.addTransitionState(level1.getCounter() + 1, new TransitionStateImpl(s.getFinalState(), state, info.getTerm("EV").toString()));
+                    addTransitionInLTS(s, state, info);
                     while (prologUtils.getEngine().hasOpenAlternatives()) {
-                        SolveInfo info1 = prologUtils.getEngine().solveNext();
-                        if(info1.isSuccess()){
-                        System.out.println("info  "+ info1);
-                        StateImpl state1 = new StateImpl(info1.getTerm("FS").toString(), level1.getCounter()+1);
-                        System.out.println("info  "+ info1.getSolution());
-                        labelTransitionSystem.addState(state1);
-                        labelTransitionSystem.addTransitionState(level1.getCounter() + 1, new TransitionStateImpl(s.getFinalState(), state1, info1.getTerm("EV").toString()));
+                        SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
+                        if (isPrologGoalSuccess(recursiveInfo)) {
+                            System.out.println("info  "+ recursiveInfo);
+                            StateImpl recursiveStates = createNewState(recursiveInfo);
+                            System.out.println("info  "+ recursiveInfo.getSolution());
+                            labelTransitionSystem.addState(recursiveStates);
+                            addTransitionInLTS(s, recursiveStates, recursiveInfo);
                         }
                     }
                 }
             }
-            level1.increment();
-            System.out.print("count inc " + level1.getCounter());
+            level.increment();
+            System.out.print("count inc " + level.getCounter());
             computeState();
         }
     }
 
-    private String inputConverter(final String input) throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
-        SolveInfo info = prologUtils.solveGoal("par2list("+input+",L).");
-        String listPar = "";
-
-        if(info.isSuccess()){
-            listPar = info.getTerm("L").toString();
-            System.out.println("par2list  "+ listPar);
-        }
-        SolveInfo info1 = prologUtils.solveGoal("member(X,"+listPar+"), list2dot(X,K).");
-        if(info1.isSuccess()) {
-            inputCompute = inputCompute.concat(info1.getTerm("K").toString() + ",");
-
-            while (prologUtils.getEngine().hasOpenAlternatives()) {
-                SolveInfo info2 = prologUtils.getEngine().solveNext();
-                if(info2.isSuccess()){
-                    inputCompute = inputCompute.concat(info1.getTerm("K").toString() + ",");
-                }
-            }
-        }
-       inputCompute = inputCompute.substring(0, inputCompute.length()-1).concat("]");
-        System.out.println("INPUT COMPUTE" + inputCompute);
-        return inputCompute;
+    private boolean isPrologGoalSuccess(final SolveInfo info){
+        return info.isSuccess();
     }
 
-    /**
-     * Convert the scala list to prolog list.
-     * @param javaList list written in scala
-     *
-     * @return list in prolog, as a string to pass as param in the goal.
-     */
-    private String javaToPrologList(List<String> javaList){
-        String outputList = "[";
-        for (String elem : javaList){
-            outputList = outputList.concat(elem+",");
-        }
-        outputList = outputList.substring(0, outputList.length()-2);
-        outputList = outputList.concat("]");
-        return outputList;
+    private List<TransitionState> getListAtLevel() {
+        return labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter());
     }
 
-    /**
-     * Convert the prolog list to scala list.
-     *
-     * @param prologList list written in prolog
-     * @return list written in scala.
-     */
-    private List<String> prologToJavaList(final String prologList){
-        List<String> javaList = new ArrayList<>();
-        String temp = prologList.replace("[","").replace("]","");
-        Collections.addAll( javaList, temp.split("dot"));
-        return javaList;
+    private void addTransitionInLTS(final TransitionState s, final StateImpl state, final SolveInfo info)
+            throws UnknownVarException, NoSolutionException {
+        labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
+                s.getFinalState(), state, info.getTerm("EV").toString()));
     }
 
-
-
-
+    private StateImpl createNewState(final SolveInfo info) throws UnknownVarException, NoSolutionException {
+        return new StateImpl(info.getTerm("FS").toString(), level.getCounter() + 1);
+    }
 }

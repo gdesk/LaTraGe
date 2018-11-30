@@ -20,7 +20,6 @@ public class StateImpl implements State {
 
     @Override
     public String getId() {
-        System.out.println("id   " + id);
         return id;
     }
 

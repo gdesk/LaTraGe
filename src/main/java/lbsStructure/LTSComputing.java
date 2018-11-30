@@ -1,6 +1,7 @@
 package lbsStructure;
 
 import alice.tuprolog.*;
+import com.sun.corba.se.impl.orbutil.concurrent.CondVar;
 import prologConfiguration.PrologUtils;
 import prologConfiguration.PrologUtilsImpl;
 import utils.Counter;
@@ -23,10 +24,12 @@ public class LTSComputing {
     private PrologUtils prologUtils;
     private Counter level;
     private String inputCompute;
+    private Converter converter;
 
     public LTSComputing() throws IOException, InvalidTheoryException {
         level = new CounterImpl();
         prologUtils = new PrologUtilsImpl(PROLOG_PATH);
+        converter = new Converter();
         labelTransitionSystem = LabelTransitionSystemImpl.getIstance();
         inputCompute="[";
     }
@@ -36,31 +39,41 @@ public class LTSComputing {
         if(labelTransitionSystem.getLabelTransitionSystem().size()-1 <= level.getCounter()) {
             List<TransitionState> listAtLevel = getListAtLevel();
             for (TransitionState s : listAtLevel) {
-                SolveInfo info = prologUtils.solveGoal(RULE + Converter.inputConverter(s.getFinalState().
-                        getValueState(), inputCompute, prologUtils) + COMMA + EVENT + COMMA + FINAL_STATE + CLOSE_ROUND + DOT);
-                System.out.println("ENTRA IN ITERATOR   "+ inputCompute);
-                System.out.println("ENTRA IN PROLOG with info  --- " + info);
-                if (isPrologGoalSuccess(info)) {
-                    System.out.println("ENTRA IN WHILE PER SI.");
-                    System.out.println("info  "+ info);
-                    StateImpl state = createNewState(info);
+                String goal = RULE + converter.inputConverter(s.getFinalState().getValueState(), inputCompute) + COMMA + EVENT + COMMA + FINAL_STATE + CLOSE_ROUND + DOT;
+                System.out.println("GOAL" + goal);
+                System.out.println("listaaaa  ---------------------- " + converter.getinputList());
+                SolveInfo info = prologUtils.solveGoal(goal);
+                System.out.println("info "+ info);
+                if (info.isSuccess()) {
+                    converter.getinputList().set(0, info.getTerm("FS").toString());
+                    String valueState =converter.outputConverter(converter.getinputList().toString());
+                    System.out.println("listaaaa  ---------------------- " + converter.getinputList());
+                    System.out.println("valueState" + valueState);
+                    StateImpl state = createNewState(valueState);
+                    System.out.println("NEW STATE 0   " + state.getId() + " - " + state.getValueState());
                     labelTransitionSystem.addState(state);
                     addTransitionInLTS(s, state, info);
+                    int index = 1;
                     while (prologUtils.getEngine().hasOpenAlternatives()) {
                         SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
-                        if (isPrologGoalSuccess(recursiveInfo)) {
-                            System.out.println("info  "+ recursiveInfo);
-                            StateImpl recursiveStates = createNewState(recursiveInfo);
-                            System.out.println("info  "+ recursiveInfo.getSolution());
+                        System.out.println("solveinfo alternativ   " + recursiveInfo);
+                        if (recursiveInfo.isSuccess()) {
+                            converter.getinputList().set(index, recursiveInfo.getTerm("FS").toString());
+                            System.out.println("listaaaa  ---------------------- " + converter.getinputList());
+                            String valueState1 =converter.outputConverter(converter.getinputList().toString());
+                            System.out.println("valueState" + valueState1);
+                            StateImpl recursiveStates = createNewState(valueState1);
+                            System.out.println("NEW STATE" + index + " " + recursiveStates.getId() + " - " + recursiveStates.getValueState());
                             labelTransitionSystem.addState(recursiveStates);
                             addTransitionInLTS(s, recursiveStates, recursiveInfo);
                         }
+                        index++;
                     }
                 }
             }
             level.increment();
             System.out.print("count inc " + level.getCounter());
-            computeState();
+          //  computeState();
         }
     }
 
@@ -78,7 +91,7 @@ public class LTSComputing {
                 s.getFinalState(), state, info.getTerm("EV").toString()));
     }
 
-    private StateImpl createNewState(final SolveInfo info) throws UnknownVarException, NoSolutionException {
-        return new StateImpl(info.getTerm("FS").toString(), level.getCounter() + 1);
+    private StateImpl createNewState(final String info) throws UnknownVarException, NoSolutionException {
+        return new StateImpl(info , level.getCounter() + 1);
     }
 }

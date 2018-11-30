@@ -21,10 +21,15 @@ list2par([H,HH], par(H, par(HH))).
 list2par([H|T1], par(H, par(HH,T))):-
  list2par(T1, par(HH,T)).
 
+ list2dot([H,HH], dot(H, dot(HH))).
+list2dot([H|T1], dot(H, dot(HH,T))):-
+ list2dot(T1, dot(HH,T)).
+
+
  /**/
-list2dot(dot(H, dot(HH)),[H,HH]).
-list2dot(dot(H, dot(HH,T)),[H|T1]):-
-	list2dot(dot(HH,T),T1).
+dot2list(dot(H, dot(HH)),[H,HH]).
+dot2list(dot(H, dot(HH,T)),[H|T1]):-
+	dot2list(dot(HH,T),T1).
 
 list2list(L,Z,Y),
 	member(X, L),

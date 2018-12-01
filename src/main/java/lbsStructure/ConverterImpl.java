@@ -30,7 +30,6 @@ public class ConverterImpl implements Converter {
         if (par2listInfo.isSuccess()) {
             listPar = par2listInfo.getTerm("L").toString();
         }
-
         SolveInfo dot2listInfo = prologUtils.solveGoal("member(X," + listPar + "), dot2list(X,K).");
         if (dot2listInfo.isSuccess()) {
             String process = dot2listInfo.getTerm("K").toString();

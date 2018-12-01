@@ -6,6 +6,7 @@ import prologConfiguration.PrologUtilsImpl;
 import utils.Counter;
 import utils.CounterImpl;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -66,13 +67,33 @@ public class LTSComputing {
         if (!event.equals("0")) {
             converter.getinputList().set(index, finalState);
             String valueState = converter.outputConverter(converter.getinputList().toString());
-            StateImpl state = new StateImpl(valueState , level.getCounter() + 1);
-            labelTransitionSystem.addState(state);
-            labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
-                    transitionState.getFinalState(), state, event));
+
+                State valuateState = checkEgualState(valueState);
+                if(valuateState!= null){
+                    labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
+                            transitionState.getFinalState(), valuateState, event));
+                }else {
+                    StateImpl newState = new StateImpl(valueState , level.getCounter() + 1);
+                    labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
+                            transitionState.getFinalState(), newState, event));
+                    labelTransitionSystem.addState(newState);
+                    System.out.println("id: " +newState.getId() + "    value: "+newState.getValueState());
+                }
+            }
+
             converter.ReInit(index);
-        }
     }
+
+    private State checkEgualState(String valueState){
+        for(Iterator<State> it = labelTransitionSystem.getAllStates().iterator(); it.hasNext();){
+            State state = it.next();
+            if(state.getValueState().equals(valueState)){
+               return state;
+            }
+        }
+        return null;
+    }
+
 
 
 }

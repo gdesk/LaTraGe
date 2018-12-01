@@ -22,14 +22,14 @@ par2list(par(X,Y), [X|Z]):-
 
 /* This function converts the process's sequence into parallel operator's sequence.
    list2par(+process parallel's list, -sequence of parallel operator).*/
-list2par([0], par(0)).
+%list2par([0], par(0)).
 list2par([H], par(H)).
-list2par([0,H], par(0, par(H))).
+%list2par([0,H], par(dot(0), par(H))).
 list2par([H,HH], par(H, par(HH))).
 list2par([H|T1], par(H, par(HH,T))):-
  list2par(T1, par(HH,T)).
 
-list2dot([], 0).
+list2dot([], dot(0)).
 list2dot([H], dot(H)).
 list2dot([H,HH], dot(H, dot(HH))).
 list2dot([H|T1], dot(H, dot(HH,T))):-
@@ -38,7 +38,7 @@ list2dot([H|T1], dot(H, dot(HH,T))):-
 
  /**/
 dot2list(0, [0]).
-dot2list(dot(0), [0]),!.
+%dot2list(dot(0), 0).
 dot2list(dot(H),[H]).
 dot2list(dot(H, dot(HH)),[H,HH]).
 dot2list(dot(H, dot(HH,T)),[H|T1]):-

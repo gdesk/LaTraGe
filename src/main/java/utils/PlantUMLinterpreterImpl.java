@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
 
-    private LabelTransitionSystem ltsStructures = LabelTransitionSystemImpl.getIstance();
+    private LabelTransitionSystem ltsStructures = LabelTransitionSystemImpl.getInstance();
     private StringBuilder plantUML;
 
     public PlantUMLinterpreterImpl(){

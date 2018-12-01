@@ -2,17 +2,17 @@ package utils;
 
 public class StateIDImpl implements StateID {
 
-    private static StateIDImpl istance=null; //riferimento all' istanza
+    private static StateIDImpl instance =null;
 
-    private int counter = 0;
+    private int counter = -1;
 
 
     public StateIDImpl(){}
 
-    public static StateID getIstance() {
-        if(istance==null)
-            istance = new StateIDImpl();
-        return istance;
+    public static StateID getInstance() {
+        if(instance ==null)
+            instance = new StateIDImpl();
+        return instance;
     }
 
     @Override

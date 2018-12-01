@@ -1,11 +1,6 @@
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import lbsStructure.*;
-import utils.PlantUMLinterpreter;
-import utils.PlantUMLinterpreterImpl;
 import utils.PlantUMLutils;
 import utils.PlantUMLutilsImpl;
-
-import javax.sound.midi.SysexMessage;
 
 
 public class prova {
@@ -14,7 +9,7 @@ public class prova {
 
         final String input = args[0];
 
-        final LabelTransitionSystemImpl labelTransitionSystem = LabelTransitionSystemImpl.getIstance();
+        final LabelTransitionSystemImpl labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
         final StateImpl root = new StateImpl(input, 0);
         final TransitionState rootTransition = new TransitionStateImpl(null, root, "");
 

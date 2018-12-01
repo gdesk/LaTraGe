@@ -1,7 +1,5 @@
 package lbsStructure;
 
-import utils.Counter;
-import utils.CounterImpl;
 import utils.StateID;
 import utils.StateIDImpl;
 
@@ -12,7 +10,7 @@ public class StateImpl implements State {
     private int level;
 
     public StateImpl(String valueState, int level) {
-        StateID stateID = StateIDImpl.getIstance();
+        StateID stateID = StateIDImpl.getInstance();
         this.valueState = valueState;
         this.level = level;
         this.id = stateID.createStateID();

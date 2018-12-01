@@ -7,23 +7,24 @@ import java.util.Map;
 
 public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
-    private static LabelTransitionSystemImpl istance=null; //riferimento all' istanza
+    private static LabelTransitionSystemImpl instance = null;
 
     private Map<Integer, List<TransitionState>> labelTransitionSystem = new HashMap<>();;
     private List<State> allStates = new ArrayList<>();
 
     public LabelTransitionSystemImpl(){}
 
-    public static LabelTransitionSystemImpl getIstance() {
-        if(istance==null)
-            istance = new LabelTransitionSystemImpl();
-        return istance;
+    public static LabelTransitionSystemImpl getInstance() {
+        if(instance ==null)
+            instance = new LabelTransitionSystemImpl();
+        return instance;
     }
 
     @Override
     public List<State> getAllStates() {
         return allStates;
     }
+
     @Override
     public void addState(State state){
         allStates.add(state);

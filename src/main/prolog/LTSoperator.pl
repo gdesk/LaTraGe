@@ -59,6 +59,10 @@ plus2list(plus(H, plus(HH)),[H,HH]).
 plus2list(plus(H, plus(HH,T)),[H|T1]):-
 	plus2list(plus(HH,T),T1).
 
+list2plus([H], plus(H)).
+list2plus([H|HH], plus(H,HH)).
+list2plus([H|T1], plus(H, plus(HH,T))):-
+	list2plus(T1, plus(HH,T)).
 
 /**/
 dropElement(X,[X|T],T).
@@ -74,7 +78,8 @@ rule([plus(X, XS) | PP], EV, FS) :-
 	plus2list(plus(X, XS), XSS),
 	member(C, XSS),
 	(atom(C)
-	-> EV=C,	FS=C
+	-> EV=C,
+		 FS=C
 	;rule([C | PP], EV, FS)).
 
 rule([dot(X, XS) | PP], EV, FS):-
@@ -82,13 +87,16 @@ rule([dot(X, XS) | PP], EV, FS):-
  member(C, XSS, L, R),
  EV=C,
  (atom(C)
- -> FS = R ;rule([C|PP], EV, FS)).
+ ->list2dot(R, LD),
+   FS=LD
+ ;rule([C|PP], EV, FS)).
 
 rule([par(X, XS) | PP], EV, FS) :-
 	par2list(par(X, XS), XSS),
 	member(C, XSS, L, R),
 	(atom(C)
-	->EV=C, append([L, []], R, FS)
+	->EV=C, 
+	append([L, 0], R, FS)
 	;	rule([C|PP], EV, CFS),
 	append(L, [CFS | R], FS)).
 

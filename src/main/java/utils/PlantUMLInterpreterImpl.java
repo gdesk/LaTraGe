@@ -44,15 +44,16 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     }
 
     private void appendTransition(){
-        final Map<Integer, List<TransitionState>> transictions = ltsStructures.getLabelTransitionSystem();
-        transictions.forEach((level, states) ->{
-            if(level == 0){
-                plantUML = plantUML.append("[*] --> "+ states.get(0).getFinalState().getId());
+        boolean isFirst = true;
+        final List<TransitionState> transictions = ltsStructures.getLabelTransitionSystem();
+        transictions.forEach((states) ->{
+            if(isFirst){
+                plantUML = plantUML.append("[*] --> "+ states.getFinalState().getId());
             }else {
                 plantUML =plantUML.append("\n");
-                states.forEach(transition -> {
-                    if(!transition.getFinalState().getValueState().isEmpty())
-                    plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ transition.getEvent()+"\n");
+                transictions.forEach(state -> {
+                    if(!state.getFinalState().getValueState().isEmpty())
+                    plantUML =plantUML.append(state.getInitialState().getId()+" --> "+state.getFinalState().getId()+": "+ state.getEvent()+"\n");
                 });
             }
 

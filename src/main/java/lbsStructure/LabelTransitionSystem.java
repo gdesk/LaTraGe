@@ -26,7 +26,7 @@ public interface LabelTransitionSystem {
      * in another state by a event
      * @return all LTS
      */
-    Map<Integer, List<TransitionState>> getLabelTransitionSystem();
+    List<TransitionState> getLabelTransitionSystem();
 
     /**
      * Add new LTS in a particular level

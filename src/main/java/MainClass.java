@@ -19,8 +19,7 @@ public class MainClass {
         LTSComputing ltsComputing = new LTSComputing();
         ltsComputing.computeState();
 
-
-        PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
-        plantUMLutils.generateImage();
+        //PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
+        //plantUMLutils.generateImage();
     }
 }

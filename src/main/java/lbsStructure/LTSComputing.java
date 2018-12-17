@@ -31,20 +31,21 @@ public class LTSComputing {
 
     public void computeState() throws UnknownVarException, NoSolutionException, NoMoreSolutionException, InterruptedException {
         if(labelTransitionSystem.getLabelTransitionSystem().size()-1 <= level.getCounter()) {
-            List<TransitionState> listAtLevel = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter());
-            if(!(listAtLevel == null)) {
-                for (TransitionState transitionState : listAtLevel) {
+            List<TransitionState> listAtLevel = labelTransitionSystem.getLabelTransitionSystem();
+            if(!(listAtLevel.isEmpty())) {
+                //for (TransitionState transitionState : listAtLevel) {
+               TransitionState transitionState = getTransitionValue();
                     int index = 0;
                     String input = "["+transitionState.getFinalState().getValueState()+","+ END +"]";
                     String goal ="rule("+ input + ", EV, FS).";
                     SolveInfo info = prologUtils.solveGoal(goal);
 
                     if (info.isSuccess()) {
+                        System.out.print("info -- " +info.getSolution()+"\n");
                         String event = info.getTerm("EV").toString();
                         String finalState = info.getTerm("FS").toString();
                         computeNewState(info, transitionState, event, finalState, index);
                         index++;
-
                         while (prologUtils.getEngine().hasOpenAlternatives()) {
                             SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
                             if(recursiveInfo.isSuccess()) {
@@ -57,40 +58,28 @@ public class LTSComputing {
                     }
                 }
                 //level.increment();
-               // computeState();
+               //computeState();
             }
         }
-    }
+    //}
 
     private void computeNewState(final SolveInfo info, final TransitionState transitionState, final String event,
                                  final String finalState, final int index) throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
         if (!event.equals("0")) {
             //converter.getInputList().set(index, finalState);
             String output = converter.outputConverter(finalState);
-
             State equalState = checkEqualState(output);
-
             TransitionState transitionState1 = null;
             if (event.contains("'>'")) {
-                System.err.print("contiene >\n");
                 if (isFirst) {
                     transitionState1= transitionState;
-                    System.err.print("transition state  "+transitionState.getFinalState().getId()+"\n ");
-                    System.err.print("transition state 1 "+transitionState1.getFinalState().getId()+"\n ");
                     isFirst = false;
                 } else {
-                    System.err.print("contiene > else\n ");
-                    System.err.print("transition state  "+transitionState.getFinalState().getId()+"\n ");
-
-                    int i = labelTransitionSystem.getLabelTransitionSystem().size();
-                    System.err.print("size "+i+"\n ");
-                    transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1)
-                            .get(i-1);
-                    System.err.print("transition state 1 "+transitionState1.getFinalState().getId()+"\n ");
+                   //int i = labelTransitionSystem.getLabelTransitionSystem().size() -1;
+                    transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1);
 
                 }
             }else {
-                System.err.print(" NON contiene > else\n ");
                 isFirst = true;
                 transitionState1 = transitionState;
             }
@@ -105,9 +94,8 @@ public class LTSComputing {
                 System.out.println("id: " + newState.getId() + "    value: " + newState.getValueState() );
             }
         }
+        // converter.reInitialization(index);
     }
-
-           // converter.reInitialization(index);
 
     private State checkEqualState(String valueState){
         for(Iterator<State> it = labelTransitionSystem.getAllStates().iterator(); it.hasNext();){
@@ -119,6 +107,13 @@ public class LTSComputing {
         return null;
     }
 
-
-
+    private TransitionState getTransitionValue() {
+        for (Iterator<TransitionState> it = labelTransitionSystem.getLabelTransitionSystem().iterator(); it.hasNext();){
+            TransitionState transitionState = it.next();
+            if(!transitionState.getFinalState().getValueState().isEmpty()){
+                return transitionState;
+            }
+        }
+        return null;
+    }
 }

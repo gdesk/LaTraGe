@@ -54,16 +54,16 @@ public class ConverterImpl implements Converter {
     }
 
     @Override
-    public List<String> getinputList(){
+    public List<String> getInputList(){
         return inputList;
     }
 
     @Override
-    public String outputConverter(final String prologoutput) throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
+    public String outputConverter(final String prologOutput) throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
         String parSequence = "";
         String valueState="[";
 
-        SolveInfo list2dotInfo = prologUtils.solveGoal("member(X," + prologoutput + "), list2dot(X,K).");
+        SolveInfo list2dotInfo = prologUtils.solveGoal("member(X," + prologOutput + "), list2dot(X,K).");
         if (list2dotInfo.isSuccess()) {
             valueState = valueState.concat(list2dotInfo.getTerm("K").toString() + ",");
 
@@ -89,7 +89,7 @@ public class ConverterImpl implements Converter {
     }
 
     @Override
-    public void ReInit(int index){
+    public void reInitialization(int index){
         inputList.set(index, tempInputList.get(index));
     }
 

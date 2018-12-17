@@ -3,7 +3,7 @@ import utils.PlantUMLutils;
 import utils.PlantUMLutilsImpl;
 
 
-public class prova {
+public class MainClass {
 
     public static void main(String [ ] args) throws Exception {
 

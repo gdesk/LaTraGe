@@ -1,12 +1,32 @@
 package prologConfiguration;
 
-
 import alice.tuprolog.Prolog;
 import alice.tuprolog.SolveInfo;
 
+/**
+ * This interface is utils to managed prolog file
+ */
+
 public interface PrologUtils {
 
+    /**
+     * Get prolog engine
+     * @return prolog engine
+     */
     Prolog getEngine();
+
+    /**
+     * Solve prolog goal and value all solution
+     * @param goal input goal
+     * @return all solution
+     */
     SolveInfo solveGoal(String goal);
+
+    /**
+     * Evaluate if goal is success insert
+     * @param goal input goal
+     * @return true if is correct otherwise false
+     */
+    //TODO: evaluate if needed
     boolean isSuccess(String goal);
 }

@@ -36,7 +36,7 @@ public class PrologUtilsImpl implements PrologUtils {
     @Override
     public boolean isSuccess(final String goal){
 
-        Boolean isSuccess = false;
+        boolean isSuccess = false;
         try {
              isSuccess = engine.solve(goal).isSuccess();
         } catch (MalformedGoalException e) {

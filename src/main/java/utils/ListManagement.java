@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ *
+ */
+
+//TODO: evaluate if needed
 public class ListManagement {
 
     /**

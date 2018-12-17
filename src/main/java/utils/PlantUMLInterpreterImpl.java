@@ -8,12 +8,12 @@ import lbsStructure.TransitionState;
 import java.util.List;
 import java.util.Map;
 
-public class PlantUMLinterpreterImpl implements PlantUMLinterpreter {
+public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
 
     private LabelTransitionSystem ltsStructures = LabelTransitionSystemImpl.getInstance();
     private StringBuilder plantUML;
 
-    public PlantUMLinterpreterImpl(){
+    public PlantUMLInterpreterImpl(){
         this.plantUML = new StringBuilder();
         startingConfiguration();
 

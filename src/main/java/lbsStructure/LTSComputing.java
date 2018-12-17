@@ -36,7 +36,7 @@ public class LTSComputing {
                 for (TransitionState transitionState : listAtLevel) {
                     int index = 0;
                     String input = converter.inputConverter(transitionState.getFinalState().getValueState(), inputCompute);
-                    String goal ="rule_parallel("+ input + ", EV, FS).";
+                    String goal ="rule("+ input + ", EV, FS).";
                     SolveInfo info = prologUtils.solveGoal(goal);
 
                     if (info.isSuccess()) {
@@ -65,10 +65,10 @@ public class LTSComputing {
     private void computeNewState(final SolveInfo info, final TransitionState transitionState, final String event,
                                  final String finalState, final int index) throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
         if (!event.equals("0")) {
-            converter.getinputList().set(index, finalState);
-            String valueState = converter.outputConverter(converter.getinputList().toString());
+            converter.getInputList().set(index, finalState);
+            String valueState = converter.outputConverter(converter.getInputList().toString());
 
-                State valuateState = checkEgualState(valueState);
+                State valuateState = checkEqualState(valueState);
                 if(valuateState!= null){
                     labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
                             transitionState.getFinalState(), valuateState, event));
@@ -81,10 +81,10 @@ public class LTSComputing {
                 }
             }
 
-            converter.ReInit(index);
+            converter.reInitialization(index);
     }
 
-    private State checkEgualState(String valueState){
+    private State checkEqualState(String valueState){
         for(Iterator<State> it = labelTransitionSystem.getAllStates().iterator(); it.hasNext();){
             State state = it.next();
             if(state.getValueState().equals(valueState)){

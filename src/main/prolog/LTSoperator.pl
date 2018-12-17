@@ -78,18 +78,20 @@ rule([plus(X, XS) | PP], EV, FS) :-
 	plus2list(plus(X, XS), XSS),
 	member(C, XSS),
 	(atom(C)
-	-> EV=C,
-		 FS=C
-	;rule([C | PP], EV, FS)).
+	-> FS=C
+	;rule([C | PP], EV, CFS)).
 
 rule([dot(X, XS) | PP], EV, FS):-
  dot2list(dot(X, XS), XSS),
+ Q=0,
  member(C, XSS, L, R),
- EV=C,
+ EV=[C, '>'],
  (atom(C)
- ->list2dot(R, LD),
-   FS=LD
- ;rule([C|PP], EV, FS)).
+ -> list2dot(R, LD),
+   	FS=LD
+ ; rule([C|PP], EV, CFS),
+ list2dot([CFS | R], Y),
+ append(L, Y, FS)).
 
 rule([par(X, XS) | PP], EV, FS) :-
 	par2list(par(X, XS), XSS),

@@ -26,14 +26,14 @@ public interface LabelTransitionSystem {
      * in another state by a event
      * @return all LTS
      */
-    List<TransitionState> getLabelTransitionSystem();
+    Map<Integer, List<TransitionState>> getLabelTransitionSystem();
 
     /**
      * Add new LTS in a particular level
-     * @param level state diagram level
+     *
      * @param transition transition state to add
      */
-    void addTransitionState(int level, TransitionState transition);
+    void addTransitionState(int computingTurn, TransitionState transition);
 
     /**
      * Remove a transition

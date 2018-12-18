@@ -10,7 +10,7 @@ public class MainClass {
         final String input = args[0];
 
         final LabelTransitionSystemImpl labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
-        final StateImpl root = new StateImpl(input, 0);
+        final StateImpl root = new StateImpl(input);
         final TransitionState rootTransition = new TransitionStateImpl(null, root, "");
 
         labelTransitionSystem.addState(root);
@@ -19,7 +19,10 @@ public class MainClass {
         LTSComputing ltsComputing = new LTSComputing();
         ltsComputing.computeState();
 
-        //PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
-        //plantUMLutils.generateImage();
+
+        PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
+        plantUMLutils.generateImage();
+
+
     }
 }

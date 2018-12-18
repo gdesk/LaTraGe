@@ -9,7 +9,7 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
     private static LabelTransitionSystemImpl instance = null;
 
-    private List<TransitionState> labelTransitionSystem = new ArrayList<>();
+    private Map<Integer, List<TransitionState>> labelTransitionSystem = new HashMap<>();
     private List<State> allStates = new ArrayList<>();
 
     public LabelTransitionSystemImpl(){}
@@ -31,13 +31,16 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
     }
 
     @Override
-    public List<TransitionState> getLabelTransitionSystem() {
+    public Map<Integer, List<TransitionState>> getLabelTransitionSystem() {
         return labelTransitionSystem;
     }
 
     @Override
-    public void addTransitionState(final int level, final TransitionState transition) {
-        labelTransitionSystem.add(transition);
+    public void addTransitionState(final int computingTurn, final TransitionState transition) {
+        if(labelTransitionSystem.get(computingTurn) == null){
+            labelTransitionSystem.put(computingTurn, new ArrayList<TransitionState>());
+        }
+        labelTransitionSystem.get(computingTurn).add(transition);
     }
 
     @Override

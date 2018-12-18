@@ -7,12 +7,10 @@ public class StateImpl implements State {
 
     private String valueState;
     private String id;
-    private int level;
 
-    public StateImpl(String valueState, int level) {
+    public StateImpl(String valueState) {
         StateID stateID = StateIDImpl.getInstance();
         this.valueState = valueState;
-        this.level = level;
         this.id = stateID.createStateID();
     }
 
@@ -26,9 +24,6 @@ public class StateImpl implements State {
         return valueState;
     }
 
-    @Override
-    public int getLevel() {
-        return level;
-    }
+
 
 }

@@ -5,11 +5,11 @@ import lbsStructure.LabelTransitionSystemImpl;
 import lbsStructure.State;
 import lbsStructure.TransitionState;
 
+import javax.sound.midi.SysexMessage;
 import java.util.List;
 import java.util.Map;
 
 public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
-
     private LabelTransitionSystem ltsStructures = LabelTransitionSystemImpl.getInstance();
     private StringBuilder plantUML;
 
@@ -44,20 +44,21 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     }
 
     private void appendTransition(){
-        boolean isFirst = true;
-        final List<TransitionState> transictions = ltsStructures.getLabelTransitionSystem();
-        transictions.forEach((states) ->{
-            if(isFirst){
-                plantUML = plantUML.append("[*] --> "+ states.getFinalState().getId());
-            }else {
-                plantUML =plantUML.append("\n");
-                transictions.forEach(state -> {
-                    if(!state.getFinalState().getValueState().isEmpty())
-                    plantUML =plantUML.append(state.getInitialState().getId()+" --> "+state.getFinalState().getId()+": "+ state.getEvent()+"\n");
-                });
-            }
+            final Map<Integer, List<TransitionState>> transitions = ltsStructures.getLabelTransitionSystem();
+        System.err.println("ENRATT  " + transitions.get(1).size());
+            transitions.forEach((level, states) ->{
+                if(level == 0){
+                    plantUML = plantUML.append("[*] --> "+ states.get(0).getFinalState().getId());
+                }else {
+                    plantUML =plantUML.append("\n");
+                    states.forEach(transition -> {
+                        if(!transition.getFinalState().getValueState().isEmpty())
+                            plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ transition.getEvent()+"\n");
+                    });
+                }
 
-        });
-        plantUML =plantUML.append("\n@enduml");
+            });
+            plantUML =plantUML.append("\n@enduml");
     }
+
 }

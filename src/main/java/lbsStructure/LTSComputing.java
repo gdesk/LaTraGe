@@ -6,6 +6,7 @@ import prologConfiguration.PrologUtilsImpl;
 import utils.Counter;
 import utils.CounterImpl;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,60 +24,66 @@ public class LTSComputing {
     boolean isFirst = true;
 
     public LTSComputing() throws IOException, InvalidTheoryException {
-        level = new CounterImpl();
+        level = new CounterImpl(0);
         prologUtils = new PrologUtilsImpl(PROLOG_PATH);
         converter = new ConverterImpl();
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
     }
 
     public void computeState() throws UnknownVarException, NoSolutionException, NoMoreSolutionException, InterruptedException {
-        if(labelTransitionSystem.getLabelTransitionSystem().size()-1 <= level.getCounter()) {
-            List<TransitionState> listAtLevel = labelTransitionSystem.getLabelTransitionSystem();
-            if(!(listAtLevel.isEmpty())) {
-                //for (TransitionState transitionState : listAtLevel) {
-               TransitionState transitionState = getTransitionValue();
+        if (labelTransitionSystem.getLabelTransitionSystem().size() - 1 <= level.getCounter()) {
+
+            List<TransitionState> listAtLevel = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter());
+            if (!(listAtLevel.isEmpty())) {
+                for(Iterator<TransitionState> it = listAtLevel.iterator(); it.hasNext();) {
+                    TransitionState transitionState = it.next();
+                    System.err.println("ENTRAAA");
                     int index = 0;
-                    String input = "["+transitionState.getFinalState().getValueState()+","+ END +"]";
-                    String goal ="rule("+ input + ", EV, FS).";
+                    String input = "[" + transitionState.getFinalState().getValueState() + "," + END + "]";
+                    String goal = "rule(" + input + ", EV, FS).";
                     SolveInfo info = prologUtils.solveGoal(goal);
 
                     if (info.isSuccess()) {
-                        System.out.print("info -- " +info.getSolution()+"\n");
+                        System.out.print("info -- " + info.getSolution() + "\n");
                         String event = info.getTerm("EV").toString();
                         String finalState = info.getTerm("FS").toString();
-                        computeNewState(info, transitionState, event, finalState, index);
+                        computeNewState(transitionState, event, finalState, level.getCounter());
                         index++;
                         while (prologUtils.getEngine().hasOpenAlternatives()) {
                             SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
-                            if(recursiveInfo.isSuccess()) {
+                            if (recursiveInfo.isSuccess()) {
                                 String recursiveEvent = recursiveInfo.getTerm("EV").toString();
                                 String recursiveFinalState = recursiveInfo.getTerm("FS").toString();
-                                computeNewState(recursiveInfo, transitionState, recursiveEvent, recursiveFinalState, index);
+                                computeNewState(transitionState, recursiveEvent, recursiveFinalState, level.getCounter());
                             }
                             index++;
                         }
                     }
                 }
-                //level.increment();
-               //computeState();
+                level.increment();
+                labelTransitionSystem.getLabelTransitionSystem().put(level.getCounter(), new ArrayList<>());
+                computeState();
             }
         }
-    //}
+    }
 
-    private void computeNewState(final SolveInfo info, final TransitionState transitionState, final String event,
-                                 final String finalState, final int index) throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
+    private void computeNewState(TransitionState transitionState, String event, String finalState, int counter) throws NoMoreSolutionException, UnknownVarException, NoSolutionException {
         if (!event.equals("0")) {
             //converter.getInputList().set(index, finalState);
             String output = converter.outputConverter(finalState);
+
             State equalState = checkEqualState(output);
-            TransitionState transitionState1 = null;
+            TransitionState transitionState1;
             if (event.contains("'>'")) {
                 if (isFirst) {
                     transitionState1= transitionState;
+                    System.err.println("ENTRA IN CONTAINS PRIMA");
                     isFirst = false;
                 } else {
-                   //int i = labelTransitionSystem.getLabelTransitionSystem().size() -1;
-                    transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1);
+                    System.err.println("ENTRA IN CONTAINS DOPO");
+                   int i = labelTransitionSystem.getLabelTransitionSystem().get(counter+1).size();
+
+                    transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(i-1);
 
                 }
             }else {
@@ -84,16 +91,21 @@ public class LTSComputing {
                 transitionState1 = transitionState;
             }
             if (equalState != null) {
-                labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
+                System.err.println("  "+ (counter+1));
+                labelTransitionSystem.addTransitionState((counter+1), new TransitionStateImpl(
                         transitionState1.getFinalState(), equalState, event));
             } else {
-                StateImpl newState = new StateImpl(output, level.getCounter() + 1);
-                labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
+                System.err.println("  "+ (counter+1));
+                StateImpl newState = new StateImpl(output);
+                labelTransitionSystem.addTransitionState((counter+1), new TransitionStateImpl(
                         transitionState1.getFinalState(), newState, event));
                 labelTransitionSystem.addState(newState);
-                System.out.println("id: " + newState.getId() + "    value: " + newState.getValueState() );
+                System.out.println("id: " + newState.getId() + "    value: " + newState.getValueState()+ "   initialState id "+ transitionState1.getFinalState().getId());
             }
         }
+System.err.println("MAPPAAA   "+labelTransitionSystem.getLabelTransitionSystem().get(1).size());
+
+
         // converter.reInitialization(index);
     }
 
@@ -107,13 +119,5 @@ public class LTSComputing {
         return null;
     }
 
-    private TransitionState getTransitionValue() {
-        for (Iterator<TransitionState> it = labelTransitionSystem.getLabelTransitionSystem().iterator(); it.hasNext();){
-            TransitionState transitionState = it.next();
-            if(!transitionState.getFinalState().getValueState().isEmpty()){
-                return transitionState;
-            }
-        }
-        return null;
-    }
+
 }

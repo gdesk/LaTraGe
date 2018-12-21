@@ -30,10 +30,10 @@ public interface LabelTransitionSystem {
 
     /**
      * Add new LTS in a particular level
-     * @param level state diagram level
+     *
      * @param transition transition state to add
      */
-    void addTransitionState(int level, TransitionState transition);
+    void addTransitionState(int computingTurn, TransitionState transition);
 
     /**
      * Remove a transition
@@ -41,4 +41,8 @@ public interface LabelTransitionSystem {
      */
     //TODO: evaluate if needed
     void removeTransitionState(TransitionState transition);
+
+    List<TransitionState> getTransitionList(int key);
+
+    List<List<String>> listToPlantUML();
 }

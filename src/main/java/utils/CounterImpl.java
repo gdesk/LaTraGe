@@ -8,6 +8,11 @@ public class CounterImpl implements Counter {
         reset();
     }
 
+    public CounterImpl(int init) {
+        this.counter = init;
+    }
+
+
     @Override
     public int getCounter() {
         return counter;

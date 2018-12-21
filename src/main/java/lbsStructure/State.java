@@ -18,9 +18,5 @@ public interface State {
      */
     String getValueState();
 
-    /**
-     * Get state level (in diagram state in output)
-     * @return diagram state level
-     */
-    int getLevel();
+
 }

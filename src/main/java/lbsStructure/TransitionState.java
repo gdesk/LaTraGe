@@ -24,9 +24,4 @@ public interface TransitionState {
      */
     String getEvent();
 
-    /**
-     * Get new level producer by final state
-     * @return level in final diagram state
-     */
-    int getLevel();
 }

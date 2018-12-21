@@ -6,82 +6,150 @@ import prologConfiguration.PrologUtilsImpl;
 import utils.Counter;
 import utils.CounterImpl;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 
+
 public class LTSComputing {
 
-    private final static String PROLOG_PATH = "src/main/prolog/LTSoperators.pl";
+    private final static String PROLOG_PATH = "src/main/prolog/LTSoperator.pl";
+    private final static int END = 0;
 
     private LabelTransitionSystemImpl labelTransitionSystem;
     private PrologUtils prologUtils;
     private Counter level;
-    private String inputCompute;
     private Converter converter;
+    boolean isFirst = true;
+    boolean isFinish = false;
 
     public LTSComputing() throws IOException, InvalidTheoryException {
-        level = new CounterImpl();
+        level = new CounterImpl(0);
         prologUtils = new PrologUtilsImpl(PROLOG_PATH);
         converter = new ConverterImpl();
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
-        inputCompute="[";
     }
 
     public void computeState() throws UnknownVarException, NoSolutionException, NoMoreSolutionException, InterruptedException {
-        if(labelTransitionSystem.getLabelTransitionSystem().size()-1 <= level.getCounter()) {
-            List<TransitionState> listAtLevel = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter());
-            if(!(listAtLevel == null)) {
+        if (labelTransitionSystem.getLabelTransitionSystem().size() - 1 <= level.getCounter()) {
 
-                for (TransitionState transitionState : listAtLevel) {
+            List<TransitionState> listAtLevel = labelTransitionSystem.getTransitionList(level.getCounter());
+            if (!(listAtLevel.isEmpty())) {
+                for (Iterator<TransitionState> it = listAtLevel.iterator(); it.hasNext(); ) {
+                    TransitionState transitionState = it.next();
+                    System.err.println("ENTRAAA");
                     int index = 0;
-                    String input = converter.inputConverter(transitionState.getFinalState().getValueState(), inputCompute);
-                    String goal ="rule("+ input + ", EV, FS).";
+                    String input = "[" + transitionState.getFinalState().getValueState() + "," + END + "]";
+                    String goal = "rule(" + input + ", EV, FS).";
                     SolveInfo info = prologUtils.solveGoal(goal);
 
                     if (info.isSuccess()) {
+                        System.out.print("info -- " + info.getSolution() + "\n");
                         String event = info.getTerm("EV").toString();
                         String finalState = info.getTerm("FS").toString();
-                        computeNewState(info, transitionState, event, finalState, index);
-                        index++;
+                        System.out.println("EVVV:"+  event);
 
+                        computeNewState(transitionState, event, finalState, level.getCounter());
+
+
+                        index++;
                         while (prologUtils.getEngine().hasOpenAlternatives()) {
                             SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
-                            if(recursiveInfo.isSuccess()) {
+                            if (recursiveInfo.isSuccess()) {
                                 String recursiveEvent = recursiveInfo.getTerm("EV").toString();
                                 String recursiveFinalState = recursiveInfo.getTerm("FS").toString();
-                                computeNewState(recursiveInfo, transitionState, recursiveEvent, recursiveFinalState, index);
+                                System.out.println("EVVV:"+  recursiveEvent);
+                                computeNewState(transitionState, recursiveEvent, recursiveFinalState, level.getCounter());
+
                             }
                             index++;
                         }
                     }
                 }
-                level.increment();
-                computeState();
+
+                    isFirst=true;
+                    level.increment();
+                    computeState();
+
             }
         }
     }
 
-    private void computeNewState(final SolveInfo info, final TransitionState transitionState, final String event,
-                                 final String finalState, final int index) throws UnknownVarException, NoSolutionException, NoMoreSolutionException {
-        if (!event.equals("0")) {
-            converter.getInputList().set(index, finalState);
-            String valueState = converter.outputConverter(converter.getInputList().toString());
+    private void computeNewState(TransitionState transitionState, String event, String finalState, int counter) throws NoMoreSolutionException, UnknownVarException, NoSolutionException {
 
-                State valuateState = checkEqualState(valueState);
-                if(valuateState!= null){
-                    labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
-                            transitionState.getFinalState(), valuateState, event));
-                }else {
-                    StateImpl newState = new StateImpl(valueState , level.getCounter() + 1);
-                    labelTransitionSystem.addTransitionState(level.getCounter() + 1, new TransitionStateImpl(
-                            transitionState.getFinalState(), newState, event));
-                    labelTransitionSystem.addState(newState);
-                    System.out.println("id: " +newState.getId() + "    value: "+newState.getValueState());
+            //converter.getInputList().set(index, finalState);
+            //String output = converter.outputConverter(finalState);
+            State equalState = checkEqualState(finalState);
+           // counter++;
+            TransitionState transitionState1;
+            if (event.contains("'>'")) {
+                if(isFirst){
+                    isFirst = false;
+                   if(equalState!=null){
+                       labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),equalState.getId(),event);
+
+
+                       labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), equalState, event));
+
+                   }else{
+                       State newState = new StateImpl(finalState);
+                       labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),newState.getId(),event);
+
+
+                       labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), newState, event));
+                       labelTransitionSystem.addState(newState);
+                   }
+
+
+                }else{
+                    if(equalState != null){
+                        int index = (labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).size())-1;
+                        transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(index);
+                        System.out.println("   sdfsfd  "+ transitionState.getFinalState().getId());
+                        labelTransitionSystem.addPlantUML(transitionState1.getFinalState().getId(),equalState.getId(),event);
+
+                        //  labelTransitionSystem.getTransitionList(level.getCounter()+1).remove((labelTransitionSystem.getTransitionList(level.getCounter()+1).size())-1);
+                        labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState1.getFinalState(), equalState, event));
+
+                    }else{
+                        State newState = new StateImpl(finalState);
+
+                        int index = (labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).size())-1;
+                        transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(index);
+                        System.out.println("   sdfsfd  "+ transitionState.getFinalState().getId());
+                        labelTransitionSystem.addPlantUML(transitionState1.getFinalState().getId(),newState.getId(),event);
+
+                        //  labelTransitionSystem.getTransitionList(level.getCounter()+1).remove((labelTransitionSystem.getTransitionList(level.getCounter()+1).size())-1);
+                        labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState1.getFinalState(), newState, event));
+                        labelTransitionSystem.addState(newState);
+                    }
+
                 }
+
+            }else {
+                if(equalState != null){
+
+                    labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),equalState.getId(),event);
+
+
+                    labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), equalState, event));
+
+                }else{
+                    State newState = new StateImpl(finalState);
+                    labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),newState.getId(),event);
+
+
+                    labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), newState, event));
+                    labelTransitionSystem.addState(newState);
+                }
+
             }
 
-            converter.reInitialization(index);
+
+
+
+        // converter.reInitialization(index);
     }
 
     private State checkEqualState(String valueState){
@@ -93,7 +161,6 @@ public class LTSComputing {
         }
         return null;
     }
-
 
 
 }

@@ -5,11 +5,11 @@ import lbsStructure.LabelTransitionSystemImpl;
 import lbsStructure.State;
 import lbsStructure.TransitionState;
 
+import javax.sound.midi.SysexMessage;
 import java.util.List;
 import java.util.Map;
 
 public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
-
     private LabelTransitionSystem ltsStructures = LabelTransitionSystemImpl.getInstance();
     private StringBuilder plantUML;
 
@@ -44,19 +44,30 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     }
 
     private void appendTransition(){
-        final Map<Integer, List<TransitionState>> transictions = ltsStructures.getLabelTransitionSystem();
-        transictions.forEach((level, states) ->{
-            if(level == 0){
-                plantUML = plantUML.append("[*] --> "+ states.get(0).getFinalState().getId());
-            }else {
-                plantUML =plantUML.append("\n");
-                states.forEach(transition -> {
-                    if(!transition.getFinalState().getValueState().isEmpty())
-                    plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ transition.getEvent()+"\n");
-                });
-            }
+       final List<List<String>> listPlanUML = ltsStructures.listToPlantUML();
+        System.out.println("listttt   " + listPlanUML);
+       listPlanUML.forEach(list->{
+           if(list.get(0).equals("")){
+               plantUML = plantUML.append("[*] --> "+ list.get(1));
+               plantUML =plantUML.append("\n");
+           }else {
+               plantUML =plantUML.append(list.get(0)+" --> "+list.get(1)+": "+ list.get(2)+"\n");
 
-        });
+           }
+       });
         plantUML =plantUML.append("\n@enduml");
+        
     }
+
+    private String getEvent(String event){
+        String eventValue = event;
+        if(event.contains(">")){
+            eventValue =  eventValue.replace("'>'","")
+                    .replace("[","")
+                    .replace("]", "")
+                    .replace(",", "");
+        }
+        return eventValue;
+    }
+
 }

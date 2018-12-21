@@ -27,8 +27,5 @@ public class TransitionStateImpl implements TransitionState {
         return event;
     }
 
-    @Override
-    public int getLevel(){
-        return finalState.getLevel();
-    }
+
 }

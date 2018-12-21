@@ -94,7 +94,7 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
         List<String> currentState = new ArrayList<String>();
         currentState.add(i);
         currentState.add(f);
-        currentState.add(getEvent(e));
+        currentState.add(e);
 
         if(!(listPlantUML.contains(currentState))){
             listPlantUML.add(currentState);

@@ -60,12 +60,15 @@ public class LTSComputing {
                                 String recursiveEvent = recursiveInfo.getTerm("EV").toString();
                                 String recursiveFinalState = recursiveInfo.getTerm("FS").toString();
                                 System.out.println("EVVV:"+  recursiveEvent);
+
                                 computeNewState(transitionState, recursiveEvent, recursiveFinalState, level.getCounter());
 
                             }
                             index++;
                         }
                     }
+
+
                 }
 
                     isFirst=true;
@@ -83,62 +86,15 @@ public class LTSComputing {
             State equalState = checkEqualState(finalState);
            // counter++;
             TransitionState transitionState1;
-            if (event.contains("'>'")) {
-                if(isFirst){
-                    isFirst = false;
-                   if(equalState!=null){
-                       labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),equalState.getId(),event);
-
-
-                       labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), equalState, event));
-
-                   }else{
-                       State newState = new StateImpl(finalState);
-                       labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),newState.getId(),event);
-
-
-                       labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), newState, event));
-                       labelTransitionSystem.addState(newState);
-                   }
-
-
-                }else{
-                    if(equalState != null){
-                        int index = (labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).size())-1;
-                        transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(index);
-                        System.out.println("   sdfsfd  "+ transitionState.getFinalState().getId());
-                        labelTransitionSystem.addPlantUML(transitionState1.getFinalState().getId(),equalState.getId(),event);
-
-                        //  labelTransitionSystem.getTransitionList(level.getCounter()+1).remove((labelTransitionSystem.getTransitionList(level.getCounter()+1).size())-1);
-                        labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState1.getFinalState(), equalState, event));
-
-                    }else{
-                        State newState = new StateImpl(finalState);
-
-                        int index = (labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).size())-1;
-                        transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(index);
-                        System.out.println("   sdfsfd  "+ transitionState.getFinalState().getId());
-                        labelTransitionSystem.addPlantUML(transitionState1.getFinalState().getId(),newState.getId(),event);
-
-                        //  labelTransitionSystem.getTransitionList(level.getCounter()+1).remove((labelTransitionSystem.getTransitionList(level.getCounter()+1).size())-1);
-                        labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState1.getFinalState(), newState, event));
-                        labelTransitionSystem.addState(newState);
-                    }
-
-                }
-
-            }else {
                 if(equalState != null){
 
                     labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),equalState.getId(),event);
-
 
                     labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), equalState, event));
 
                 }else{
                     State newState = new StateImpl(finalState);
                     labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),newState.getId(),event);
-
 
                     labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), newState, event));
                     labelTransitionSystem.addState(newState);
@@ -150,7 +106,7 @@ public class LTSComputing {
 
 
         // converter.reInitialization(index);
-    }
+
 
     private State checkEqualState(String valueState){
         for(Iterator<State> it = labelTransitionSystem.getAllStates().iterator(); it.hasNext();){

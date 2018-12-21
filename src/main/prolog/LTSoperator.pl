@@ -29,8 +29,7 @@ list2dot([H|T1], dot(H, dot(HH,T))):-
 
 
  /**/
-dot2list(dot(0), [0]).
-dot2list(dot(0),[]).
+%dot2list(dot(0, T),[T]).
 dot2list(dot(H),[H]).
 dot2list(dot(H, dot(HH)),[H,HH]).
 dot2list(dot(H, dot(HH,T)),[H|T1]):-
@@ -41,6 +40,8 @@ dot2list(dot(H, dot(HH,T)),[H|T1]):-
 plus2list(plus(H, plus(HH)),[H,HH]).
 plus2list(plus(H, plus(HH,T)),[H|T1]):-
 	plus2list(plus(HH,T),T1).
+	
+primo([X|T],X, T).
 
 
 member(E, [E | Xs], [], Xs).
@@ -48,25 +49,27 @@ member(E, [X | Xs], [X | L], R) :-
     member(E, Xs, L, R).
 
 
+
 /**/
 rule([plus(X, XS) | PP], EV, FS) :-
 	plus2list(plus(X, XS), XSS),
 	member(C, XSS),
 	(atom(C)
-	-> EV=C, FS=0
+	->EV=C, FS =C
 	;rule([C | PP], EV, FS)).
+
 
 rule([dot(X, XS) | PP], EV, FS):-
  dot2list(dot(X, XS), XSS),
- Q=0,
- member(C, XSS, L, R),
- EV=[C, '>'],
+ primo(XSS,C,T),
  (atom(C)
- -> list2dot(R, LD),
+ -> list2dot(T, LD),
+ EV=C,
    	FS=LD
  ; rule([C|PP], EV, CFS),
- list2dot([CFS | R], Y),
- append(L, Y, FS)).
+ list2dot([CFS | T], Y),
+ FS=Y).
+ %append(L, Y, FS)).
 
 rule([par(X, XS) | PP], EV, FS) :-
 	par2list(par(X, XS), XSS),

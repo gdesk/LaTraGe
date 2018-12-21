@@ -48,4 +48,12 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
         labelTransitionSystem.remove(transition);
     }
 
+    @Override
+    public List<TransitionState> getTransitionList(final int key){
+
+        if(!labelTransitionSystem.containsKey(key)){
+            labelTransitionSystem.put(key, new ArrayList<>());
+        }
+        return labelTransitionSystem.get(key);
+    }
 }

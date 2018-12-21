@@ -53,12 +53,23 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
                     plantUML =plantUML.append("\n");
                     states.forEach(transition -> {
                         if(!transition.getFinalState().getValueState().isEmpty())
-                            plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ transition.getEvent()+"\n");
+                            plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ getEvent(transition.getEvent())+"\n");
                     });
                 }
 
             });
             plantUML =plantUML.append("\n@enduml");
+    }
+
+    private String getEvent(String event){
+        String eventValue = event;
+        if(event.contains(">")){
+            eventValue =  eventValue.replace("'>'","")
+                    .replace("[","")
+                    .replace("]", "")
+                    .replace(",", "");
+        }
+        return eventValue;
     }
 
 }

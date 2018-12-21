@@ -41,4 +41,6 @@ public interface LabelTransitionSystem {
      */
     //TODO: evaluate if needed
     void removeTransitionState(TransitionState transition);
+
+    List<TransitionState> getTransitionList(int key);
 }

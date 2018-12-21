@@ -33,7 +33,7 @@ public class LTSComputing {
     public void computeState() throws UnknownVarException, NoSolutionException, NoMoreSolutionException, InterruptedException {
         if (labelTransitionSystem.getLabelTransitionSystem().size() - 1 <= level.getCounter()) {
 
-            List<TransitionState> listAtLevel = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter());
+            List<TransitionState> listAtLevel = labelTransitionSystem.getTransitionList(level.getCounter());
             if (!(listAtLevel.isEmpty())) {
                 for(Iterator<TransitionState> it = listAtLevel.iterator(); it.hasNext();) {
                     TransitionState transitionState = it.next();
@@ -61,7 +61,6 @@ public class LTSComputing {
                     }
                 }
                 level.increment();
-                labelTransitionSystem.getLabelTransitionSystem().put(level.getCounter(), new ArrayList<>());
                 computeState();
             }
         }

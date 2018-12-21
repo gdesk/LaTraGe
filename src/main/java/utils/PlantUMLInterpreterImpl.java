@@ -44,21 +44,19 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     }
 
     private void appendTransition(){
-            final Map<Integer, List<TransitionState>> transitions = ltsStructures.getLabelTransitionSystem();
-        System.err.println("ENRATT  " + transitions.get(1).size());
-            transitions.forEach((level, states) ->{
-                if(level == 0){
-                    plantUML = plantUML.append("[*] --> "+ states.get(0).getFinalState().getId());
-                }else {
-                    plantUML =plantUML.append("\n");
-                    states.forEach(transition -> {
-                        if(!transition.getFinalState().getValueState().isEmpty())
-                            plantUML =plantUML.append(transition.getInitialState().getId()+" --> "+transition.getFinalState().getId()+": "+ getEvent(transition.getEvent())+"\n");
-                    });
-                }
+       final List<List<String>> listPlanUML = ltsStructures.listToPlantUML();
+        System.out.println("listttt   " + listPlanUML);
+       listPlanUML.forEach(list->{
+           if(list.get(0).equals("")){
+               plantUML = plantUML.append("[*] --> "+ list.get(1));
+               plantUML =plantUML.append("\n");
+           }else {
+               plantUML =plantUML.append(list.get(0)+" --> "+list.get(1)+": "+ getEvent(list.get(2))+"\n");
 
-            });
-            plantUML =plantUML.append("\n@enduml");
+           }
+       });
+        plantUML =plantUML.append("\n@enduml");
+        
     }
 
     private String getEvent(String event){

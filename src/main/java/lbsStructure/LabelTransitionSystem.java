@@ -43,4 +43,6 @@ public interface LabelTransitionSystem {
     void removeTransitionState(TransitionState transition);
 
     List<TransitionState> getTransitionList(int key);
+
+    List<List<String>> listToPlantUML();
 }

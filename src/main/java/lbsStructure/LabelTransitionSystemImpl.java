@@ -56,4 +56,38 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
         }
         return labelTransitionSystem.get(key);
     }
+
+    @Override
+    public List<List<String>> listToPlantUML() {
+        List<List<String>> listPlantUML = new ArrayList<>();
+
+        labelTransitionSystem.forEach((level, states) -> {
+
+
+            if (level == 0) {
+                List<String> currentState = new ArrayList<String>();
+                currentState.add("");
+                currentState.add(states.get(0).getFinalState().getId());
+                currentState.add("");
+                listPlantUML.add(currentState);
+            } else {
+                states.forEach(transition -> {
+                    if (!transition.getFinalState().getValueState().isEmpty()) {
+                        List<String> currentState = new ArrayList<String>();
+                        currentState.add(transition.getInitialState().getId());
+                        currentState.add(transition.getFinalState().getId());
+                        currentState.add(transition.getEvent());
+                        if(!(listPlantUML.contains(currentState))){
+                            listPlantUML.add(currentState);
+                        }
+                    }
+                });
+            }
+
+        });
+        System.out.println("LIST PLNT -- > " + listPlantUML);
+        return listPlantUML;
+    }
+
+
 }

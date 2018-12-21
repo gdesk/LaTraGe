@@ -22,6 +22,7 @@ public class LTSComputing {
     private Counter level;
     private Converter converter;
     boolean isFirst = true;
+    boolean isFinish = false;
 
     public LTSComputing() throws IOException, InvalidTheoryException {
         level = new CounterImpl(0);
@@ -35,7 +36,7 @@ public class LTSComputing {
 
             List<TransitionState> listAtLevel = labelTransitionSystem.getTransitionList(level.getCounter());
             if (!(listAtLevel.isEmpty())) {
-                for(Iterator<TransitionState> it = listAtLevel.iterator(); it.hasNext();) {
+                for (Iterator<TransitionState> it = listAtLevel.iterator(); it.hasNext(); ) {
                     TransitionState transitionState = it.next();
                     System.err.println("ENTRAAA");
                     int index = 0;
@@ -47,62 +48,105 @@ public class LTSComputing {
                         System.out.print("info -- " + info.getSolution() + "\n");
                         String event = info.getTerm("EV").toString();
                         String finalState = info.getTerm("FS").toString();
+                        System.out.println("EVVV:"+  event);
+
                         computeNewState(transitionState, event, finalState, level.getCounter());
+
+
                         index++;
                         while (prologUtils.getEngine().hasOpenAlternatives()) {
                             SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
                             if (recursiveInfo.isSuccess()) {
                                 String recursiveEvent = recursiveInfo.getTerm("EV").toString();
                                 String recursiveFinalState = recursiveInfo.getTerm("FS").toString();
+                                System.out.println("EVVV:"+  recursiveEvent);
                                 computeNewState(transitionState, recursiveEvent, recursiveFinalState, level.getCounter());
+
                             }
                             index++;
                         }
                     }
                 }
-                level.increment();
-                computeState();
+
+                    isFirst=true;
+                    level.increment();
+                    computeState();
+
             }
         }
     }
 
     private void computeNewState(TransitionState transitionState, String event, String finalState, int counter) throws NoMoreSolutionException, UnknownVarException, NoSolutionException {
-        if (!event.equals("0")) {
-            //converter.getInputList().set(index, finalState);
-            String output = converter.outputConverter(finalState);
 
-            State equalState = checkEqualState(output);
+            //converter.getInputList().set(index, finalState);
+            //String output = converter.outputConverter(finalState);
+            State equalState = checkEqualState(finalState);
+           // counter++;
             TransitionState transitionState1;
             if (event.contains("'>'")) {
-                if (isFirst) {
-                    transitionState1= transitionState;
-                    System.err.println("ENTRA IN CONTAINS PRIMA");
+                if(isFirst){
                     isFirst = false;
-                } else {
-                    System.err.println("ENTRA IN CONTAINS DOPO");
-                   int i = labelTransitionSystem.getLabelTransitionSystem().get(counter+1).size();
+                   if(equalState!=null){
+                       labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),equalState.getId(),event);
 
-                    transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(i-1);
+
+                       labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), equalState, event));
+
+                   }else{
+                       State newState = new StateImpl(finalState);
+                       labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),newState.getId(),event);
+
+
+                       labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), newState, event));
+                       labelTransitionSystem.addState(newState);
+                   }
+
+
+                }else{
+                    if(equalState != null){
+                        int index = (labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).size())-1;
+                        transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(index);
+                        System.out.println("   sdfsfd  "+ transitionState.getFinalState().getId());
+                        labelTransitionSystem.addPlantUML(transitionState1.getFinalState().getId(),equalState.getId(),event);
+
+                        //  labelTransitionSystem.getTransitionList(level.getCounter()+1).remove((labelTransitionSystem.getTransitionList(level.getCounter()+1).size())-1);
+                        labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState1.getFinalState(), equalState, event));
+
+                    }else{
+                        State newState = new StateImpl(finalState);
+
+                        int index = (labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).size())-1;
+                        transitionState1 = labelTransitionSystem.getLabelTransitionSystem().get(level.getCounter()+1).get(index);
+                        System.out.println("   sdfsfd  "+ transitionState.getFinalState().getId());
+                        labelTransitionSystem.addPlantUML(transitionState1.getFinalState().getId(),newState.getId(),event);
+
+                        //  labelTransitionSystem.getTransitionList(level.getCounter()+1).remove((labelTransitionSystem.getTransitionList(level.getCounter()+1).size())-1);
+                        labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState1.getFinalState(), newState, event));
+                        labelTransitionSystem.addState(newState);
+                    }
 
                 }
+
             }else {
-                isFirst = true;
-                transitionState1 = transitionState;
+                if(equalState != null){
+
+                    labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),equalState.getId(),event);
+
+
+                    labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), equalState, event));
+
+                }else{
+                    State newState = new StateImpl(finalState);
+                    labelTransitionSystem.addPlantUML(transitionState.getFinalState().getId(),newState.getId(),event);
+
+
+                    labelTransitionSystem.addTransitionState((level.getCounter()+1),new TransitionStateImpl(transitionState.getFinalState(), newState, event));
+                    labelTransitionSystem.addState(newState);
+                }
+
             }
-            if (equalState != null) {
-                System.err.println("  "+ (counter+1));
-                labelTransitionSystem.addTransitionState((counter+1), new TransitionStateImpl(
-                        transitionState1.getFinalState(), equalState, event));
-            } else {
-                System.err.println("  "+ (counter+1));
-                StateImpl newState = new StateImpl(output);
-                labelTransitionSystem.addTransitionState((counter+1), new TransitionStateImpl(
-                        transitionState1.getFinalState(), newState, event));
-                labelTransitionSystem.addState(newState);
-                System.out.println("id: " + newState.getId() + "    value: " + newState.getValueState()+ "   initialState id "+ transitionState1.getFinalState().getId());
-            }
-        }
-System.err.println("MAPPAAA   "+labelTransitionSystem.getLabelTransitionSystem().get(1).size());
+
+
 
 
         // converter.reInitialization(index);

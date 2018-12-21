@@ -51,7 +51,7 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
                plantUML = plantUML.append("[*] --> "+ list.get(1));
                plantUML =plantUML.append("\n");
            }else {
-               plantUML =plantUML.append(list.get(0)+" --> "+list.get(1)+": "+ getEvent(list.get(2))+"\n");
+               plantUML =plantUML.append(list.get(0)+" --> "+list.get(1)+": "+ list.get(2)+"\n");
 
            }
        });

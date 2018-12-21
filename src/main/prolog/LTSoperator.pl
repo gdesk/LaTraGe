@@ -38,7 +38,7 @@ list2par([H|T1], par(H, par(HH,T))):-
  list2par(T1, par(HH,T)).
 
 list2dot([], 0).
-list2dot([H], dot(H)).
+list2dot([H], H).
 list2dot([H,HH], dot(H, dot(HH))).
 list2dot([H|T1], dot(H, dot(HH,T))):-
  list2dot(T1, dot(HH,T)).
@@ -99,9 +99,14 @@ rule([par(X, XS) | PP], EV, FS) :-
 	(atom(C)
 	->EV=C, 
 	append(L, [0], OUT),
-	append(OUT, R, FS)
+	append(OUT, R, OO),
+	list2par(OO, FS)
 	;	rule([C|PP], EV, CFS),
-	append(L, [CFS | R], FS)).
+	append(L, [CFS | R], OO),
+	list2par(OO, FS)).
+
+%rule(_, EV, 0):-
+%EV='exit'.
 
 
 

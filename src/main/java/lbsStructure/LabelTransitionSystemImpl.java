@@ -11,6 +11,7 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
     private Map<Integer, List<TransitionState>> labelTransitionSystem = new HashMap<>();
     private List<State> allStates = new ArrayList<>();
+    List<List<String>> listPlantUML = new ArrayList<>();
 
     public LabelTransitionSystemImpl(){}
 
@@ -59,7 +60,7 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
     @Override
     public List<List<String>> listToPlantUML() {
-        List<List<String>> listPlantUML = new ArrayList<>();
+        /*List<List<String>> listPlantUML = new ArrayList<>();
 
         labelTransitionSystem.forEach((level, states) -> {
 
@@ -84,10 +85,30 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
                 });
             }
 
-        });
+        });*/
         System.out.println("LIST PLNT -- > " + listPlantUML);
         return listPlantUML;
     }
 
+    public void addPlantUML(String i, String f, String e){
+        List<String> currentState = new ArrayList<String>();
+        currentState.add(i);
+        currentState.add(f);
+        currentState.add(getEvent(e));
 
+        if(!(listPlantUML.contains(currentState))){
+            listPlantUML.add(currentState);
+        }
+    }
+
+    private String getEvent(String event){
+        String eventValue = event;
+        if(event.contains(">")){
+            eventValue =  eventValue.replace("'>'","")
+                    .replace("[","")
+                    .replace("]", "")
+                    .replace(",", "");
+        }
+        return eventValue;
+    }
 }

@@ -17,6 +17,6 @@ public class PlantUMLutilsImpl implements PlantUMLutils {
         SourceStringReader reader = new SourceStringReader(plantUmlSource.toString());
         FileOutputStream output = new FileOutputStream(new File("LTSimage.png"));
         reader.generateImage(output);
-
+        plantUMLinterpreter.reset();
     }
 }

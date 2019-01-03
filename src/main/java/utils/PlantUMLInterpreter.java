@@ -11,4 +11,5 @@ public interface PlantUMLInterpreter {
      * @return a sequence builder
      */
     StringBuilder createPlantUML();
+    void reset();
 }

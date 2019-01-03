@@ -35,14 +35,8 @@ public interface LabelTransitionSystem {
      */
     void addTransitionState(int computingTurn, TransitionState transition);
 
-    /**
-     * Remove a transition
-     * @param transition transition state to remove
-     */
-    //TODO: evaluate if needed
-    void removeTransitionState(TransitionState transition);
-
+    void addPlantUML(String i, String f, String e);
+    void reset();
+    List<List<String>> getPlantUMLList();
     List<TransitionState> getTransitionList(int key);
-
-    List<List<String>> listToPlantUML();
 }

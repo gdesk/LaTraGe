@@ -22,7 +22,7 @@ list2par([H|T1], par(H, par(HH,T))):-
  list2par(T1, par(HH,T)).
 
 list2dot([], 0).
-list2dot([H], H).
+list2dot([H], dot(H)).
 list2dot([H,HH], dot(H, dot(HH))).
 list2dot([H|T1], dot(H, dot(HH,T))):-
  list2dot(T1, dot(HH,T)).
@@ -52,19 +52,25 @@ member(E, [X | Xs], [X | L], R) :-
 
 /**/
 rule([plus(X, XS) | PP], EV, FS) :-
+write("qua plus"),
 	plus2list(plus(X, XS), XSS),
 	member(C, XSS),
 	(atom(C)
-	->EV=C, FS =C
+	->EV=C, FS = 0
 	;rule([C | PP], EV, FS)).
 
 
 rule([dot(X, XS) | PP], EV, FS):-
+write("qua dot"),
  dot2list(dot(X, XS), XSS),
+ write("qua"),
+ write(XSS),
  primo(XSS,C,T),
  (atom(C)
  -> list2dot(T, LD),
- EV=C,
+ write('Event ' + C),
+ write('Final ' + LD),
+ 		EV=C,
    	FS=LD
  ; rule([C|PP], EV, CFS),
  list2dot([CFS | T], Y),

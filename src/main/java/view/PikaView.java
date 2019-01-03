@@ -10,14 +10,15 @@ import java.io.IOException;
 
 public class PikaView extends JFrame implements ActionListener {
     private static final int PANE_SIZE = 600;
-    private static final int IMAGE_PANE_SIZE = 600;
     private static final int TEXT_SIZE = 20;
+    private static final String IMAGE_PATH = "LTSimage.png";
     private static final JTextField inputField = new JTextField();
     private static final JLabel input = new JLabel("Input: ");
     private static JButton exitButton = new JButton("Exit");
     private static JButton processButton = new JButton("Process");
     private static JButton newRuleButton = new JButton("Insert new rule");
     private static JScrollPane scrollPane;
+    private JPanel imagePane;
     private Computing computing;
 
     public PikaView(){
@@ -31,13 +32,12 @@ public class PikaView extends JFrame implements ActionListener {
         processButton.addActionListener(this);
         infoPane.add(processButton);
 
+        infoPane.add(newRuleButton);
+
         exitButton.addActionListener(e -> System.exit(0));
         infoPane.add(exitButton);
 
-        infoPane.add(newRuleButton);
-
-        JPanel imagePane = new JPanel();
-        imagePane.setPreferredSize(new Dimension(IMAGE_PANE_SIZE, IMAGE_PANE_SIZE));
+        imagePane = new ImageUtils();
         scrollPane = new JScrollPane(imagePane);
         add(BorderLayout.CENTER, scrollPane);
 
@@ -59,7 +59,7 @@ public class PikaView extends JFrame implements ActionListener {
             } finally {
                 new PlantUMLutilsImpl();
                 try {
-                    setImage();
+                    createImage();
                 } catch (Exception ex1) {
                     ex1.printStackTrace();
                 }
@@ -68,8 +68,16 @@ public class PikaView extends JFrame implements ActionListener {
         inputField.setText("");
     }
 
-    private void setImage() throws IOException, InvalidTheoryException {
+    private void createImage() throws IOException, InvalidTheoryException {
         new PlantUMLutilsImpl().generateImage();
         computing.reset();
+        setImagePane();
+    }
+
+    private void setImagePane() {
+        imagePane.removeAll();
+        JLabel image = new JLabel(new ImageIcon(IMAGE_PATH));
+        imagePane.add(BorderLayout.CENTER,image);
+        imagePane.repaint();
     }
 }

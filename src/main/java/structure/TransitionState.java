@@ -1,4 +1,4 @@
-package lbsStructure;
+package structure;
 
 /**
  * This interface is utils to managements a all transition rule

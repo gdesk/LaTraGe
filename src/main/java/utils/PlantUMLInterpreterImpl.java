@@ -1,19 +1,17 @@
 package utils;
 
-import lbsStructure.LabelTransitionSystem;
-import lbsStructure.LabelTransitionSystemImpl;
-import lbsStructure.State;
-import lbsStructure.TransitionState;
+import structure.LabelTransitionSystem;
+import structure.LabelTransitionSystemImpl;
+import structure.State;
 
-import javax.sound.midi.SysexMessage;
 import java.util.List;
-import java.util.Map;
 
 public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
-    private LabelTransitionSystem ltsStructures = LabelTransitionSystemImpl.getInstance();
+    private LabelTransitionSystem ltsStructures;
     private StringBuilder plantUML;
 
     public PlantUMLInterpreterImpl(){
+        ltsStructures = LabelTransitionSystemImpl.getInstance();
         this.plantUML = new StringBuilder();
         startingConfiguration();
 
@@ -44,8 +42,7 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     }
 
     private void appendTransition(){
-       final List<List<String>> listPlanUML = ltsStructures.listToPlantUML();
-        System.out.println("listttt   " + listPlanUML);
+       final List<List<String>> listPlanUML = ltsStructures.getPlantUMLList();
        listPlanUML.forEach(list->{
            if(list.get(0).equals("")){
                plantUML = plantUML.append("[*] --> "+ list.get(1));
@@ -55,8 +52,7 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
 
            }
        });
-        plantUML =plantUML.append("\n@enduml");
-        
+        plantUML = plantUML.append("\n@enduml");
     }
 
     private String getEvent(String event){
@@ -70,4 +66,9 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
         return eventValue;
     }
 
+    @Override
+    public void reset(){
+        plantUML =  new StringBuilder();
+        ltsStructures.reset();
+    }
 }

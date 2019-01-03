@@ -1,4 +1,4 @@
-package lbsStructure;
+package structure;
 
 public class TransitionStateImpl implements TransitionState {
 
@@ -27,5 +27,5 @@ public class TransitionStateImpl implements TransitionState {
         return event;
     }
 
-
+    //TODO: valutare getEvent e getInitialState
 }

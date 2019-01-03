@@ -32,16 +32,4 @@ public class PrologUtilsImpl implements PrologUtils {
         }
         return solution;
     }
-
-    @Override
-    public boolean isSuccess(final String goal){
-
-        boolean isSuccess = false;
-        try {
-             isSuccess = engine.solve(goal).isSuccess();
-        } catch (MalformedGoalException e) {
-            System.out.println("ERROR - Malformed goal /n");
-        }
-        return isSuccess;
-    }
 }

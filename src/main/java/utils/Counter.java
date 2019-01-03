@@ -16,9 +16,4 @@ public interface Counter {
      * Increment counter value
      */
     void increment();
-
-    /**
-     * Reset counter
-     */
-    void reset();
 }

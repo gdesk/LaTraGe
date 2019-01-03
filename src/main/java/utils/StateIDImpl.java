@@ -6,9 +6,6 @@ public class StateIDImpl implements StateID {
 
     private int counter = -1;
 
-
-    public StateIDImpl(){}
-
     public static StateID getInstance() {
         if(instance ==null)
             instance = new StateIDImpl();

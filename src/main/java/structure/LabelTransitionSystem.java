@@ -1,4 +1,4 @@
-package lbsStructure;
+package structure;
 
 import java.util.List;
 import java.util.Map;
@@ -30,13 +30,33 @@ public interface LabelTransitionSystem {
 
     /**
      * Add new LTS in a particular level
-     *
      * @param transition transition state to add
      */
     void addTransitionState(int computingTurn, TransitionState transition);
 
-    void addPlantUML(String i, String f, String e);
+    /**
+     * Add new transition state in list. Structure are: initialState, finalState, event
+     * @param initialState actual initial state
+     * @param finalState actual final state
+     * @param event actual event
+     */
+    void addPlantUML(String initialState, String finalState, String event);
+
+    /**
+     * Reset all structures
+     */
     void reset();
+
+    /**
+     * Get plant structure
+     * @return actual LTS
+     */
     List<List<String>> getPlantUMLList();
+
+    /**
+     * Get all transitions
+     * @param key level
+     * @return list of actual transitions in LTS
+     */
     List<TransitionState> getTransitionList(int key);
 }

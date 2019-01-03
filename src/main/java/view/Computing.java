@@ -4,7 +4,7 @@ import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.UnknownVarException;
-import lbsStructure.*;
+import structure.*;
 
 import java.io.IOException;
 
@@ -17,6 +17,7 @@ public class Computing {
     public Computing(){
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
     }
+
 
     public void initialization(final String input) throws IOException, InvalidTheoryException, InterruptedException,
             UnknownVarException, NoMoreSolutionException, NoSolutionException {

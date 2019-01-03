@@ -1,4 +1,4 @@
-package lbsStructure;
+package structure;
 
 /**
  * This interface management state object

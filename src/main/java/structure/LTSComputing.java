@@ -1,4 +1,4 @@
-package lbsStructure;
+package structure;
 
 import alice.tuprolog.*;
 import prologConfiguration.PrologUtils;

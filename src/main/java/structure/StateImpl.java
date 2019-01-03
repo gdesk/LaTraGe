@@ -1,4 +1,4 @@
-package lbsStructure;
+package structure;
 
 import utils.StateID;
 import utils.StateIDImpl;

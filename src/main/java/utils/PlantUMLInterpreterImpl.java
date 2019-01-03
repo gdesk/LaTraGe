@@ -1,8 +1,8 @@
 package utils;
 
-import lbsStructure.LabelTransitionSystem;
-import lbsStructure.LabelTransitionSystemImpl;
-import lbsStructure.State;
+import structure.LabelTransitionSystem;
+import structure.LabelTransitionSystemImpl;
+import structure.State;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package lbsStructure;
+package structure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,11 +53,11 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
     }
 
     @Override
-    public void addPlantUML(String i, String f, String e){
+    public void addPlantUML(String initialState, String finalState, String event){
         List<String> currentState = new ArrayList<String>();
-        currentState.add(i);
-        currentState.add(f);
-        currentState.add(e);
+        currentState.add(initialState);
+        currentState.add(finalState);
+        currentState.add(event);
         if(!(listPlantUML.contains(currentState))){
             listPlantUML.add(currentState);
         }

@@ -1,6 +1,3 @@
-import lbsStructure.*;
-import utils.PlantUMLutils;
-import utils.PlantUMLutilsImpl;
 import view.PikaView;
 
 public class MainClass {
@@ -16,9 +13,9 @@ public class MainClass {
         labelTransitionSystem.addState(root);
         labelTransitionSystem.addTransitionState(0, rootTransition );
         LTSComputing ltsComputing = new LTSComputing();
-        ltsComputing.computeState();*/
-        new PikaView();
-        /*PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
+        ltsComputing.computeState();
+        PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
         plantUMLutils.generateImage();*/
+        new PikaView();
     }
 }

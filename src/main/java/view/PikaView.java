@@ -1,6 +1,5 @@
 package view;
 
-
 import alice.tuprolog.InvalidTheoryException;
 import utils.PlantUMLutilsImpl;
 import javax.swing.*;
@@ -11,11 +10,14 @@ import java.io.IOException;
 
 public class PikaView extends JFrame implements ActionListener {
     private static final int PANE_SIZE = 600;
+    private static final int IMAGE_PANE_SIZE = 600;
     private static final int TEXT_SIZE = 20;
     private static final JTextField inputField = new JTextField();
     private static final JLabel input = new JLabel("Input: ");
     private static JButton exitButton = new JButton("Exit");
     private static JButton processButton = new JButton("Process");
+    private static JButton newRuleButton = new JButton("Insert new rule");
+    private static JScrollPane scrollPane;
     private Computing computing;
 
     public PikaView(){
@@ -32,8 +34,14 @@ public class PikaView extends JFrame implements ActionListener {
         exitButton.addActionListener(e -> System.exit(0));
         infoPane.add(exitButton);
 
-        add(BorderLayout.NORTH, infoPane);
+        infoPane.add(newRuleButton);
 
+        JPanel imagePane = new JPanel();
+        imagePane.setPreferredSize(new Dimension(IMAGE_PANE_SIZE, IMAGE_PANE_SIZE));
+        scrollPane = new JScrollPane(imagePane);
+        add(BorderLayout.CENTER, scrollPane);
+
+        add(BorderLayout.NORTH, infoPane);
         setSize(PANE_SIZE,PANE_SIZE);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,13 +59,17 @@ public class PikaView extends JFrame implements ActionListener {
             } finally {
                 new PlantUMLutilsImpl();
                 try {
-                    new PlantUMLutilsImpl().generateImage();
-                    computing.reset();
+                    setImage();
                 } catch (Exception ex1) {
                     ex1.printStackTrace();
                 }
             }
         }
         inputField.setText("");
+    }
+
+    private void setImage() throws IOException, InvalidTheoryException {
+        new PlantUMLutilsImpl().generateImage();
+        computing.reset();
     }
 }

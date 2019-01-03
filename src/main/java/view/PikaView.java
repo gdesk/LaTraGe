@@ -79,5 +79,6 @@ public class PikaView extends JFrame implements ActionListener {
         JLabel image = new JLabel(new ImageIcon(IMAGE_PATH));
         imagePane.add(BorderLayout.CENTER,image);
         imagePane.repaint();
+        imagePane.revalidate();
     }
 }

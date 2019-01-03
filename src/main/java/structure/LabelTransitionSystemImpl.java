@@ -61,7 +61,6 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
         if(!(listPlantUML.contains(currentState))){
             listPlantUML.add(currentState);
         }
-        System.out.println("PLUNTlIST -------------- " + listPlantUML);
     }
 
     @Override

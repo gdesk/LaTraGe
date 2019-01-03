@@ -28,12 +28,10 @@ public class LTSComputing {
             List<TransitionState> listAtLevel = labelTransitionSystem.getTransitionList(level.getCounter());
             if (!(listAtLevel.isEmpty())) {
                 for (TransitionState transitionState : listAtLevel) {
-                    System.err.println("ENTRAAA ---------------------");
                     String input = "[" + transitionState.getFinalState().getValueState() + "," + END + "]";
                     String goal = "rule(" + input + ", EV, FS).";
                     SolveInfo info = prologUtils.solveGoal(goal);
                     if (info.isSuccess()) {
-                        System.out.print("info -- " + info.getSolution() + "\n");
                         String event = info.getTerm("EV").toString();
                         String finalState = info.getTerm("FS").toString();
                         computeNewState(transitionState, event, finalState);

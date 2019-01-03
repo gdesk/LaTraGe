@@ -43,7 +43,6 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
 
     private void appendTransition(){
        final List<List<String>> listPlanUML = ltsStructures.getPlantUMLList();
-       System.out.println("listttt   " + listPlanUML);
        listPlanUML.forEach(list->{
            if(list.get(0).equals("")){
                plantUML = plantUML.append("[*] --> "+ list.get(1));
@@ -54,7 +53,6 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
            }
        });
         plantUML = plantUML.append("\n@enduml");
-        System.out.println("listttt  3------------------  " + listPlanUML);
     }
 
     private String getEvent(String event){

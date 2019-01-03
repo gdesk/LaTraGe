@@ -11,4 +11,9 @@ public interface StateID {
      * @return state identifier
      */
     String createStateID();
+
+    /**
+     * Reset StateID
+     */
+    void reset();
 }

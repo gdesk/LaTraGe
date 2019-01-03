@@ -39,7 +39,7 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
     @Override
     public void addTransitionState(final int computingTurn, final TransitionState transition) {
-        labelTransitionSystem.computeIfAbsent(computingTurn, k -> new ArrayList<TransitionState>());
+        labelTransitionSystem.computeIfAbsent(computingTurn, k -> new ArrayList<>());
         labelTransitionSystem.get(computingTurn).add(transition);
     }
 
@@ -72,6 +72,9 @@ public class LabelTransitionSystemImpl implements LabelTransitionSystem {
     public void reset(){
         listPlantUML.clear();
         labelTransitionSystem.clear();
+        for (State s :allStates) {
+            s.reset();
+        }
         allStates.clear();
         instance = null;
     }

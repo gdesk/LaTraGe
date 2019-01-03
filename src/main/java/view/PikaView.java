@@ -14,9 +14,10 @@ public class PikaView extends JFrame implements ActionListener {
     private static final String IMAGE_PATH = "LTSimage.png";
     private static final JTextField inputField = new JTextField();
     private static final JLabel input = new JLabel("Input: ");
-    private static JButton exitButton = new JButton("Exit");
-    private static JButton processButton = new JButton("Process");
-    private static JButton newRuleButton = new JButton("Insert new rule");
+    private static final JButton exitButton = new JButton("Exit");
+    private static final JButton processButton = new JButton("Process");
+    private static final JButton newRuleButton = new JButton("Insert new rule");
+    private JLabel image = new JLabel();
     private JPanel imagePane;
     private Computing computing;
 
@@ -75,9 +76,16 @@ public class PikaView extends JFrame implements ActionListener {
 
     private void setImagePane() {
         imagePane.removeAll();
-        JLabel image = new JLabel(new ImageIcon(IMAGE_PATH));
-        imagePane.add(BorderLayout.CENTER,image);
-        imagePane.repaint();
-        imagePane.revalidate();
+        SwingUtilities.invokeLater(() ->{
+            try {
+                Thread.sleep(1000);
+                image.setIcon(new ImageIcon(IMAGE_PATH));
+                imagePane.add(BorderLayout.CENTER, image);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            imagePane.validate();
+            imagePane.repaint();
+        });
     }
 }

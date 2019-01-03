@@ -18,5 +18,9 @@ public interface State {
      */
     String getValueState();
 
+    /**
+     * Reset state counter
+     */
+    void reset();
 
 }

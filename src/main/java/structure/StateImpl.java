@@ -7,9 +7,10 @@ public class StateImpl implements State {
 
     private String valueState;
     private String id;
+    StateID stateID;
 
     public StateImpl(String valueState) {
-        StateID stateID = StateIDImpl.getInstance();
+        stateID = StateIDImpl.getInstance();
         this.valueState = valueState;
         this.id = stateID.createStateID();
     }
@@ -24,6 +25,8 @@ public class StateImpl implements State {
         return valueState;
     }
 
-
-
+    @Override
+    public void reset(){
+        stateID.reset();
+    }
 }

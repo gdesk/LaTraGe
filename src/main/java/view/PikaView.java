@@ -17,7 +17,6 @@ public class PikaView extends JFrame implements ActionListener {
     private static JButton exitButton = new JButton("Exit");
     private static JButton processButton = new JButton("Process");
     private static JButton newRuleButton = new JButton("Insert new rule");
-    private static JScrollPane scrollPane;
     private JPanel imagePane;
     private Computing computing;
 
@@ -38,7 +37,7 @@ public class PikaView extends JFrame implements ActionListener {
         infoPane.add(exitButton);
 
         imagePane = new ImageUtils();
-        scrollPane = new JScrollPane(imagePane);
+        JScrollPane scrollPane = new JScrollPane(imagePane);
         add(BorderLayout.CENTER, scrollPane);
 
         add(BorderLayout.NORTH, infoPane);

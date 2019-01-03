@@ -47,8 +47,11 @@ rule([plus(X, XS) | PP], EV, FS) :-
 rule([dot(X) | PP], EV, FS):-
 	dot2list(dot(X), XSS),
 	firstElemet(XSS, C, T),
-	EV = C,
-  FS = 0.
+	(atom(C)
+	-> EV = C, FS = 0
+	; rule([C|PP], EV, CFS), write("dd"),
+	list2dot([CFS | T], Y),
+	FS=Y).
 
 
 rule([dot(X, XS) | PP], EV, FS):-

@@ -18,9 +18,4 @@ public class CounterImpl implements Counter {
     public void increment() {
         counter++;
     }
-
-    @Override
-    public void reset() {
-        counter=0;
-    }
 }

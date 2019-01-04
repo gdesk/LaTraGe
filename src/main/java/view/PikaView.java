@@ -2,10 +2,14 @@ package view;
 
 import alice.tuprolog.InvalidTheoryException;
 import utils.PlantUMLutilsImpl;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class PikaView extends JFrame implements ActionListener {
@@ -56,14 +60,12 @@ public class PikaView extends JFrame implements ActionListener {
                 computing.initialization(text);
             } catch (Exception ex) {
                 ex.printStackTrace();
-            } finally {
-                new PlantUMLutilsImpl();
-                try {
-                    createImage();
-                } catch (Exception ex1) {
-                    ex1.printStackTrace();
-                }
             }
+        }
+        try {
+            createImage();
+        } catch (IOException | InvalidTheoryException e1) {
+            e1.printStackTrace();
         }
         inputField.setText("");
     }
@@ -76,16 +78,15 @@ public class PikaView extends JFrame implements ActionListener {
 
     private void setImagePane() {
         imagePane.removeAll();
-        SwingUtilities.invokeLater(() ->{
-            try {
-                Thread.sleep(1000);
-                image.setIcon(new ImageIcon(IMAGE_PATH));
-                imagePane.add(BorderLayout.CENTER, image);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            imagePane.validate();
-            imagePane.repaint();
-        });
+        try {
+            BufferedImage img = ImageIO.read(new File(IMAGE_PATH));
+            this.image.setIcon(new ImageIcon(img));
+            this.image.revalidate();
+            this.image.repaint();
+        } catch (IOException ex) {}
+
+        imagePane.add(BorderLayout.CENTER, image);
+        imagePane.validate();
+        imagePane.repaint();
     }
 }

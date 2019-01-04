@@ -1,4 +1,4 @@
-package lbsStructure;
+package model;
 
 import utils.StateID;
 import utils.StateIDImpl;
@@ -7,12 +7,11 @@ public class StateImpl implements State {
 
     private String valueState;
     private String id;
-    private int level;
+    StateID stateID;
 
-    public StateImpl(String valueState, int level) {
-        StateID stateID = StateIDImpl.getInstance();
+    public StateImpl(String valueState) {
+        stateID = StateIDImpl.getInstance();
         this.valueState = valueState;
-        this.level = level;
         this.id = stateID.createStateID();
     }
 
@@ -27,8 +26,7 @@ public class StateImpl implements State {
     }
 
     @Override
-    public int getLevel() {
-        return level;
+    public void reset(){
+        stateID.reset();
     }
-
 }

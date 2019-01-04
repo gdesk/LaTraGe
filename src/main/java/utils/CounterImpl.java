@@ -4,9 +4,10 @@ public class CounterImpl implements Counter {
 
     private int counter;
 
-    public CounterImpl() {
-        reset();
+    public CounterImpl(int init) {
+        this.counter = init;
     }
+
 
     @Override
     public int getCounter() {
@@ -16,10 +17,5 @@ public class CounterImpl implements Counter {
     @Override
     public void increment() {
         counter++;
-    }
-
-    @Override
-    public void reset() {
-        counter=0;
     }
 }

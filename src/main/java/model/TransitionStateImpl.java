@@ -1,4 +1,4 @@
-package lbsStructure;
+package model;
 
 public class TransitionStateImpl implements TransitionState {
 
@@ -27,8 +27,5 @@ public class TransitionStateImpl implements TransitionState {
         return event;
     }
 
-    @Override
-    public int getLevel(){
-        return finalState.getLevel();
-    }
+    //TODO: valutare getEvent e getInitialState
 }

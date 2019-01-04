@@ -1,4 +1,4 @@
-package lbsStructure;
+package model;
 
 /**
  * This interface management state object
@@ -19,8 +19,8 @@ public interface State {
     String getValueState();
 
     /**
-     * Get state level (in diagram state in output)
-     * @return diagram state level
+     * Reset state counter
      */
-    int getLevel();
+    void reset();
+
 }

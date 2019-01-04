@@ -1,4 +1,4 @@
-package utils;
+package viewModel.diagram;
 
 /**
  * This interface is utils for managed plantUML creation
@@ -11,4 +11,5 @@ public interface PlantUMLInterpreter {
      * @return a sequence builder
      */
     StringBuilder createPlantUML();
+    void reset();
 }

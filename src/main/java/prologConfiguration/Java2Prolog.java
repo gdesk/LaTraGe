@@ -7,7 +7,7 @@ import alice.tuprolog.SolveInfo;
  * This interface is utils to managed prolog file
  */
 
-public interface PrologUtils {
+public interface Java2Prolog {
 
     /**
      * Get prolog engine
@@ -21,12 +21,4 @@ public interface PrologUtils {
      * @return all solution
      */
     SolveInfo solveGoal(String goal);
-
-    /**
-     * Evaluate if goal is success insert
-     * @param goal input goal
-     * @return true if is correct otherwise false
-     */
-    //TODO: evaluate if needed
-    boolean isSuccess(String goal);
 }

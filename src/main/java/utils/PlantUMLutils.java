@@ -6,4 +6,6 @@ public interface PlantUMLutils {
 
     void generateImage() throws IOException;
 
+    String getHttpURL() ;
+
 }

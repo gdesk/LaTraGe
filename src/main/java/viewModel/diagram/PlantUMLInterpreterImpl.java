@@ -1,8 +1,8 @@
-package utils;
+package viewModel.diagram;
 
-import structure.LabelTransitionSystem;
-import structure.LabelTransitionSystemImpl;
-import structure.State;
+import model.LabelTransitionSystem;
+import model.LabelTransitionSystemImpl;
+import model.State;
 
 import java.util.List;
 

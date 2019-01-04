@@ -1,7 +1,8 @@
 package view;
 
 import alice.tuprolog.InvalidTheoryException;
-import utils.PlantUMLutilsImpl;
+import viewModel.diagram.PlantUMLutilsImpl;
+import viewModel.Initialization;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,21 +17,23 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class PikaView extends JFrame implements ActionListener {
+public class View extends JFrame implements ActionListener {
     private static final int PANE_SIZE = 600;
     private static final int TEXT_SIZE = 20;
+    private static final int IMAGE_PANE_SIZE = 700;
     private static final String IMAGE_PATH = "LTSimage.png";
     private static final JTextField inputField = new JTextField();
     private static final JTextField httpField = new JTextField();
+
     private static final JLabel input = new JLabel("Input: ");
     private static final JButton exitButton = new JButton("Exit");
     private static final JButton processButton = new JButton("Process");
     private static final JButton newRuleButton = new JButton("Insert new rule");
     private JLabel image = new JLabel();
     private JPanel imagePane;
-    private Computing computing;
+    private Initialization initialization;
 
-    public PikaView(){
+    public View(){
         setLayout(new BorderLayout());
 
         JPanel infoPane = new JPanel();
@@ -51,7 +54,9 @@ public class PikaView extends JFrame implements ActionListener {
         //httpField.setEnabled(false);
         linkPane.add(httpField);
 
-        imagePane = new ImageUtils();
+        imagePane = new JPanel();
+        imagePane.setPreferredSize(new Dimension(IMAGE_PANE_SIZE, IMAGE_PANE_SIZE));
+
         JScrollPane scrollPane = new JScrollPane(imagePane);
 
         add(BorderLayout.CENTER, scrollPane);
@@ -67,8 +72,8 @@ public class PikaView extends JFrame implements ActionListener {
         String text = inputField.getText();
         if(!text.isEmpty()){
             try {
-                computing = new Computing();
-                computing.initialization(text);
+                initialization = new Initialization();
+                initialization.start(text);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -82,9 +87,10 @@ public class PikaView extends JFrame implements ActionListener {
     }
 
     private void createImage() throws IOException, InvalidTheoryException {
-        new PlantUMLutilsImpl().generateImage();
-        computing.reset();
+        String url = new PlantUMLutilsImpl().generateImage();
+        initialization.reset();
         setImagePane();
+        setLink(url);
     }
 
     private void setImagePane() {
@@ -100,11 +106,9 @@ public class PikaView extends JFrame implements ActionListener {
         imagePane.add(BorderLayout.CENTER, image);
         imagePane.validate();
         imagePane.repaint();
-        setLink();
     }
 
-    private void setLink() {
-        String url = new PlantUMLutilsImpl().getHttpURL();
+    private void setLink(String url) {
         httpField.setText(url);
         httpField.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         httpField.addMouseListener(new MouseAdapter() {

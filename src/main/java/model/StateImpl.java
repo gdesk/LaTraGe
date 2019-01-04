@@ -1,4 +1,4 @@
-package structure;
+package model;
 
 import utils.StateID;
 import utils.StateIDImpl;

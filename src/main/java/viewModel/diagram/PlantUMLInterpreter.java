@@ -1,4 +1,4 @@
-package utils;
+package viewModel.diagram;
 
 /**
  * This interface is utils for managed plantUML creation

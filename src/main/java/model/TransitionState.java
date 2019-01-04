@@ -1,4 +1,4 @@
-package structure;
+package model;
 
 /**
  * This interface is utils to managements a all transition rule

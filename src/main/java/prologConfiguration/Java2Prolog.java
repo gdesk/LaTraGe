@@ -7,7 +7,7 @@ import alice.tuprolog.SolveInfo;
  * This interface is utils to managed prolog file
  */
 
-public interface PrologUtils {
+public interface Java2Prolog {
 
     /**
      * Get prolog engine

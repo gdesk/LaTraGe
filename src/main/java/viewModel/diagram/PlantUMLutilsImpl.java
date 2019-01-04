@@ -1,4 +1,4 @@
-package utils;
+package viewModel.diagram;
 
 import net.sourceforge.plantuml.SourceStringReader;
 import net.sourceforge.plantuml.code.Transcoder;
@@ -14,7 +14,7 @@ public class PlantUMLutilsImpl implements PlantUMLutils {
     private static String httpURL;
 
     @Override
-    public void generateImage() throws IOException {
+    public String generateImage() throws IOException {
         StringBuilder plantUmlSource = plantUMLinterpreter.createPlantUML();
         System.out.println("PlantUML: " + plantUmlSource.toString());
         SourceStringReader reader = new SourceStringReader(plantUmlSource.toString());
@@ -22,8 +22,9 @@ public class PlantUMLutilsImpl implements PlantUMLutils {
         reader.generateImage(output);
         Transcoder t = TranscoderUtil.getDefaultTranscoder();
         String url = t.encode(plantUmlSource.toString());
-        httpURL = "http://www.plantuml.com/plantuml/uml/" + url;
+        httpURL = "";
         plantUMLinterpreter.reset();
+        return "http://www.plantuml.com/plantuml/uml/" + url;
     }
 
     @Override

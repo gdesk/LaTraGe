@@ -1,10 +1,10 @@
-package utils;
+package viewModel.diagram;
 
 import java.io.IOException;
 
 public interface PlantUMLutils {
 
-    void generateImage() throws IOException;
+    String generateImage() throws IOException;
 
     String getHttpURL() ;
 

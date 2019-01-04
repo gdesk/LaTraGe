@@ -1,4 +1,4 @@
-package structure;
+package model;
 
 public class TransitionStateImpl implements TransitionState {
 

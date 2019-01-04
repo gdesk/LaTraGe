@@ -1,4 +1,4 @@
-package structure;
+package model;
 
 /**
  * This interface management state object

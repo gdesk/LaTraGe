@@ -1,25 +1,25 @@
-package view;
+package viewModel;
 
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.UnknownVarException;
-import structure.*;
+import model.*;
 
 import java.io.IOException;
 
-public class Computing {
+public class Initialization {
     private LabelTransitionSystemImpl labelTransitionSystem;
     private StateImpl root;
     private TransitionState rootTransition;
     private LTSComputing ltsComputing;
 
-    public Computing(){
+    public Initialization(){
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
     }
 
 
-    public void initialization(final String input) throws IOException, InvalidTheoryException, InterruptedException,
+    public void start(final String input) throws IOException, InvalidTheoryException,
             UnknownVarException, NoMoreSolutionException, NoSolutionException {
         root = new StateImpl(input);
         rootTransition = new TransitionStateImpl(null, root, "");

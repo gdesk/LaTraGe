@@ -1,8 +1,9 @@
-package structure;
+package viewModel;
 
 import alice.tuprolog.*;
-import prologConfiguration.PrologUtils;
-import prologConfiguration.PrologUtilsImpl;
+import model.*;
+import prologConfiguration.Java2Prolog;
+import prologConfiguration.Java2Java2PrologImpl;
 import utils.Counter;
 import utils.CounterImpl;
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class LTSComputing {
     private final static int END = 0;
 
     private LabelTransitionSystemImpl labelTransitionSystem;
-    private PrologUtils prologUtils;
+    private Java2Prolog java2Prolog;
     private Counter level;
 
     public LTSComputing() throws IOException, InvalidTheoryException {
@@ -30,13 +31,13 @@ public class LTSComputing {
                 for (TransitionState transitionState : listAtLevel) {
                     String input = "[" + transitionState.getFinalState().getValueState() + "," + END + "]";
                     String goal = "rule(" + input + ", EV, FS).";
-                    SolveInfo info = prologUtils.solveGoal(goal);
+                    SolveInfo info = java2Prolog.solveGoal(goal);
                     if (info.isSuccess()) {
                         String event = info.getTerm("EV").toString();
                         String finalState = info.getTerm("FS").toString();
                         computeNewState(transitionState, event, finalState);
-                        while (prologUtils.getEngine().hasOpenAlternatives()) {
-                            SolveInfo recursiveInfo = prologUtils.getEngine().solveNext();
+                        while (java2Prolog.getEngine().hasOpenAlternatives()) {
+                            SolveInfo recursiveInfo = java2Prolog.getEngine().solveNext();
                             if (recursiveInfo.isSuccess()) {
                                 String recursiveEvent = recursiveInfo.getTerm("EV").toString();
                                 String recursiveFinalState = recursiveInfo.getTerm("FS").toString();
@@ -76,7 +77,7 @@ public class LTSComputing {
     public void reset() throws IOException, InvalidTheoryException{
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
         level = new CounterImpl(0);
-        prologUtils = new PrologUtilsImpl(PROLOG_PATH);
+        java2Prolog = new Java2Java2PrologImpl(PROLOG_PATH);
     }
 
 }

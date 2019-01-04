@@ -1,4 +1,4 @@
-import view.PikaView;
+import view.View;
 
 public class MainClass {
 
@@ -12,10 +12,10 @@ public class MainClass {
 
         labelTransitionSystem.addState(root);
         labelTransitionSystem.addTransitionState(0, rootTransition );
-        LTSComputing ltsComputing = new LTSComputing();
+        viewModel.LTSComputing ltsComputing = new viewModel.LTSComputing();
         ltsComputing.computeState();
         PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
         plantUMLutils.generateImage();*/
-        new PikaView();
+        new View();
     }
 }

@@ -3,7 +3,7 @@ package viewModel;
 import alice.tuprolog.*;
 import model.*;
 import prologConfiguration.Java2Prolog;
-import prologConfiguration.Java2Java2PrologImpl;
+import prologConfiguration.Java2PrologImpl;
 import utils.Counter;
 import utils.CounterImpl;
 import java.io.IOException;
@@ -77,7 +77,7 @@ public class LTSComputing {
     public void reset() throws IOException, InvalidTheoryException{
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
         level = new CounterImpl(0);
-        java2Prolog = new Java2Java2PrologImpl(PROLOG_PATH);
+        java2Prolog = new Java2PrologImpl(PROLOG_PATH);
     }
 
 }

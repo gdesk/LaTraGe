@@ -1,13 +1,13 @@
 package utils;
 
 /**
- * This interface create singleton for managed a Counter object
+ * This interface manages a simple counter
  */
-
 public interface Counter {
 
     /**
-     * Get counter value
+     * Get current counter value
+     *
      * @return current value
      */
     int getCounter();

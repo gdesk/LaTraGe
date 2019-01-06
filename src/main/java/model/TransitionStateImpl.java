@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * This class manages the specific transition rule.
+ */
 public class TransitionStateImpl implements TransitionState {
 
     private State initialState;
@@ -26,6 +29,5 @@ public class TransitionStateImpl implements TransitionState {
     public String getEvent() {
         return event;
     }
-
-    //TODO: valutare getEvent e getInitialState
+    
 }

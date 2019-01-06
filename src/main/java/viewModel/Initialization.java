@@ -4,32 +4,23 @@ import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.UnknownVarException;
-import model.*;
 
 import java.io.IOException;
 
-public class Initialization {
-    private LabelTransitionSystemImpl labelTransitionSystem;
-    private StateImpl root;
-    private TransitionState rootTransition;
-    private LTSComputing ltsComputing;
+/**
+ * This interface manages the initial configuration to the computing the entire LTS.
+ */
+public interface Initialization {
 
-    public Initialization(){
-        labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
-    }
+    /**
+     * Creates the root of state diagram to compute the entire diagram
+     *
+     * @param input the process algebra to compute
+     */
+    void start(String input);
 
-
-    public void start(final String input) throws IOException, InvalidTheoryException,
-            UnknownVarException, NoMoreSolutionException, NoSolutionException {
-        root = new StateImpl(input);
-        rootTransition = new TransitionStateImpl(null, root, "");
-        labelTransitionSystem.addState(root);
-        labelTransitionSystem.addTransitionState(0, rootTransition);
-        ltsComputing = new LTSComputing();
-        ltsComputing.computeState();
-    }
-
-    public void reset() throws IOException, InvalidTheoryException {
-        ltsComputing.reset();
-    }
+    /**
+     * reset to compute another process algebra
+     */
+    void reset();
 }

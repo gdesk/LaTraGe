@@ -1,25 +1,28 @@
 package model;
 
 /**
- * This interface is utils to managements a all transition rule
+ * This interface manages the specific transition rule.
  */
 
 public interface TransitionState {
 
     /**
-     * Get initial state observed
+     * Get initial state of the current transition state
+     *
      * @return actual initial state
      */
     State getInitialState();
 
     /**
-     * Get final state produce starting from observed initial state
+     * Get final state of the current transition state, that is an output produced  starting from initial state
+     *
      * @return all final states
      */
     State getFinalState();
 
     /**
-     * Get event consume in initial state
+     * Get event of the current transition, consumed from initial state
+     *
      * @return consume event
      */
     String getEvent();

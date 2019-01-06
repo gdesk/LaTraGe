@@ -6,6 +6,9 @@ import model.State;
 
 import java.util.List;
 
+/**
+ * This class manages the creation of file in format plantUML to make a diagram
+ */
 public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     private LabelTransitionSystem ltsStructures;
     private StringBuilder plantUML;
@@ -22,6 +25,12 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
         appendAllState();
         appendTransition();
         return plantUML;
+    }
+
+    @Override
+    public void reset(){
+        plantUML =  new StringBuilder();
+        ltsStructures.reset();
     }
 
     private void startingConfiguration(){
@@ -42,16 +51,16 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     }
 
     private void appendTransition(){
-       final List<List<String>> listPlanUML = ltsStructures.getPlantUMLList();
-       listPlanUML.forEach(list->{
-           if(list.get(0).equals("")){
-               plantUML = plantUML.append("[*] --> "+ list.get(1));
-               plantUML =plantUML.append("\n");
-           }else {
-               plantUML =plantUML.append(list.get(0)+" --> "+list.get(1)+": "+ getEvent(list.get(2))+"\n");
+        final List<List<String>> listPlanUML = ltsStructures.getPlantUMLList();
+        listPlanUML.forEach(list->{
+            if(list.get(0).equals("")){
+                plantUML = plantUML.append("[*] --> "+ list.get(1));
+                plantUML =plantUML.append("\n");
+            }else {
+                plantUML =plantUML.append(list.get(0)+" --> "+list.get(1)+": "+ getEvent(list.get(2))+"\n");
 
-           }
-       });
+            }
+        });
         plantUML = plantUML.append("\n@enduml");
     }
 
@@ -66,9 +75,4 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
         return eventValue;
     }
 
-    @Override
-    public void reset(){
-        plantUML =  new StringBuilder();
-        ltsStructures.reset();
-    }
 }

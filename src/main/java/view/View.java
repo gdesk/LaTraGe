@@ -1,6 +1,5 @@
 package view;
 
-import alice.tuprolog.InvalidTheoryException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import viewModel.Initialization;
-import viewModel.diagram.PlantUMLutilsImpl;
+import viewModel.diagram.PlantUMLUtilsImpl;
 import viewModel.InitializationImpl;
 
 /**
@@ -24,7 +23,7 @@ public class View extends JFrame implements ActionListener {
     private static final int PANE_SIZE = 600;
     private static final int TEXT_SIZE = 20;
     private static final int IMAGE_PANE_SIZE = 700;
-    private static final String IMAGE_PATH = "LTSimage.png";
+    private static final String IMAGE_PATH = "LTSImage.png";
     private static final JTextField inputField = new JTextField();
     private static final JTextField httpField = new JTextField();
 
@@ -84,8 +83,8 @@ public class View extends JFrame implements ActionListener {
         inputField.setText("");
     }
 
-    private void createImage() throws IOException, InvalidTheoryException {
-        String url = new PlantUMLutilsImpl().generateImage();
+    private void createImage() throws IOException {
+        String url = new PlantUMLUtilsImpl().generateImage();
         initialization.reset();
         setImagePane();
         setLink(url);

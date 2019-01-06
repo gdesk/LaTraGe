@@ -2,7 +2,7 @@ package viewModel.diagram;
 
 import java.io.IOException;
 
-public interface PlantUMLutils {
+public interface PlantUMLUtils {
 
     String generateImage() throws IOException;
 

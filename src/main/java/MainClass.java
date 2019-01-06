@@ -15,7 +15,7 @@ public class MainClass {
         labelTransitionSystem.addTransitionState(0, rootTransition );
         viewModel.LTSComputingImpl ltsComputing = new viewModel.LTSComputingImpl();
         ltsComputing.computeState();
-        PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
+        PlantUMLUtils plantUMLutils = new PlantUMLUtilsImpl();
         plantUMLutils.generateImage();*/
         new View();
     }

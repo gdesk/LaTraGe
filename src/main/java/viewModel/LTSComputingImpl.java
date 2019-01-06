@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class LTSComputingImpl implements LTSComputing {
 
-    private final static String PROLOG_PATH = "src/main/prolog/LTSoperator.pl";
+    private final static String PROLOG_PATH = "src/main/prolog/LTSOperators.pl";
     private final static int END = 0;
 
     private LabelTransitionSystemImpl labelTransitionSystem;

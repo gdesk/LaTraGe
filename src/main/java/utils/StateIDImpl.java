@@ -1,5 +1,9 @@
 package utils;
 
+/**
+ * This class manages the state identifier.
+ * This is a singleton to a consistent state id in all computing
+ */
 public class StateIDImpl implements StateID {
 
     private static StateIDImpl instance = null;

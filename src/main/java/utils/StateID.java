@@ -1,19 +1,19 @@
 package utils;
 
 /**
- * This interface create singleton for manage state identifier
+ * This interface manages the state identifier
  */
-
 public interface StateID {
 
     /**
-     * Create new identifier
+     * Create new identifier automatically
+     *
      * @return state identifier
      */
     String createStateID();
 
     /**
-     * Reset StateID
+     * Reset StateID to another computing
      */
     void reset();
 }

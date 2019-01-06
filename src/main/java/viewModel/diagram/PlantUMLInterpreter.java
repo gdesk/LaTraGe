@@ -1,15 +1,20 @@
+
 package viewModel.diagram;
 
 /**
- * This interface is utils for managed plantUML creation
+ * This interface manages the creation of file in format plantUML to make a diagram
  */
-
 public interface PlantUMLInterpreter {
 
     /**
-     * Create a platUML
-     * @return a sequence builder
+     * Create a file in plantUML format.
+     *
+     * @return a file in plantUML format.
      */
     StringBuilder createPlantUML();
+
+    /**
+     * Reset structures PlantUML interpreter.
+     */
     void reset();
 }

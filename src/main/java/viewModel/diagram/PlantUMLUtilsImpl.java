@@ -8,10 +8,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class PlantUMLutilsImpl implements PlantUMLutils {
+/**
+ * The class produces the image of entire LTS diagram.
+ */
+public class PlantUMLUtilsImpl implements PlantUMLUtils {
 
     private PlantUMLInterpreter plantUMLinterpreter  = new PlantUMLInterpreterImpl();
-    private static String httpURL;
 
     @Override
     public String generateImage() throws IOException {
@@ -22,13 +24,7 @@ public class PlantUMLutilsImpl implements PlantUMLutils {
         reader.generateImage(output);
         Transcoder t = TranscoderUtil.getDefaultTranscoder();
         String url = t.encode(plantUmlSource.toString());
-        httpURL = "";
         plantUMLinterpreter.reset();
         return "http://www.plantuml.com/plantuml/uml/" + url;
-    }
-
-    @Override
-    public String getHttpURL() {
-        return  httpURL;
     }
 }

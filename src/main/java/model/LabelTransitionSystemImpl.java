@@ -5,9 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class manages the structures of the system.
+ * The core is a Label Transition System(LTS), output state's diagram of this application
+ */
 public class LabelTransitionSystemImpl implements LabelTransitionSystem {
 
     private static LabelTransitionSystemImpl instance;
+
     private Map<Integer, List<TransitionState>> labelTransitionSystem = new HashMap<>();
     private List<State> allStates = new ArrayList<>();
     private List<List<String>> listPlantUML = new ArrayList<>();

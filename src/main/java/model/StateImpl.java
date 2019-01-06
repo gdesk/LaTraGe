@@ -3,6 +3,9 @@ package model;
 import utils.StateID;
 import utils.StateIDImpl;
 
+/**
+ * This class manages the specific state object.
+ */
 public class StateImpl implements State {
 
     private String valueState;

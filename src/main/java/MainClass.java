@@ -1,7 +1,7 @@
 import view.View;
 
 /**
- * System main class
+ * The main class of the system.
  */
 public class MainClass {
 
@@ -13,7 +13,7 @@ public class MainClass {
         final TransitionState rootTransition = new TransitionStateImpl(null, root, "");
         labelTransitionSystem.addState(root);
         labelTransitionSystem.addTransitionState(0, rootTransition );
-        viewModel.LTSComputing ltsComputing = new viewModel.LTSComputing();
+        viewModel.LTSComputingImpl ltsComputing = new viewModel.LTSComputingImpl();
         ltsComputing.computeState();
         PlantUMLutils plantUMLutils = new PlantUMLutilsImpl();
         plantUMLutils.generateImage();*/

@@ -12,8 +12,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import viewModel.diagram.PlantUMLutilsImpl;
+
 import viewModel.Initialization;
+import viewModel.diagram.PlantUMLutilsImpl;
+import viewModel.InitializationImpl;
 
 /**
  * This class implements system GUI
@@ -68,7 +70,7 @@ public class View extends JFrame implements ActionListener {
         String text = inputField.getText();
         if(!text.isEmpty()){
             try {
-                initialization = new Initialization();
+                initialization = new InitializationImpl();
                 initialization.start(text);
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -13,7 +13,7 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     private LabelTransitionSystem ltsStructures;
     private StringBuilder plantUML;
 
-    public PlantUMLInterpreterImpl(){
+    public PlantUMLInterpreterImpl() {
         ltsStructures = LabelTransitionSystemImpl.getInstance();
         this.plantUML = new StringBuilder();
         startingConfiguration();
@@ -28,13 +28,13 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
     }
 
     @Override
-    public void reset(){
-        plantUML =  new StringBuilder();
+    public void reset() {
+        plantUML = new StringBuilder();
         ltsStructures.reset();
     }
 
-    private void startingConfiguration(){
-        plantUML.append("@startuml\n "+
+    private void startingConfiguration() {
+        plantUML.append("@startuml\n" +
                 "skinparam DefaultFontSize 20\n" +
                 "skinparam StateFontStyle italics\n" +
                 "skinparam DefaultFontName Courier\n" +
@@ -42,33 +42,43 @@ public class PlantUMLInterpreterImpl implements PlantUMLInterpreter {
                 "\n");
     }
 
-    private void appendAllState(){
+    private void appendAllState() {
         final List<State> allState = ltsStructures.getAllStates();
         allState.forEach(state -> {
-            if(!state.getValueState().isEmpty()) plantUML = plantUML.append(state.getId()+" : "+state.getValueState()+"\n");
+            if (!state.getValueState().isEmpty())
+                plantUML.append(state.getId())
+                        .append(" : ")
+                        .append(state.getValueState())
+                        .append("\n");
         });
-        plantUML = plantUML.append("\n");
+        plantUML.append("\n");
     }
 
-    private void appendTransition(){
+    private void appendTransition() {
         final List<List<String>> listPlanUML = ltsStructures.getPlantUMLList();
-        listPlanUML.forEach(list->{
-            if(list.get(0).equals("")){
-                plantUML = plantUML.append("[*] --> "+ list.get(1));
-                plantUML =plantUML.append("\n");
-            }else {
-                plantUML =plantUML.append(list.get(0)+" --> "+list.get(1)+": "+ getEvent(list.get(2))+"\n");
+        listPlanUML.forEach(list -> {
+            if (list.get(0).equals("")) {
+                plantUML.append("[*] --> ")
+                        .append(list.get(1))
+                        .append("\n");
+            } else {
+                plantUML.append(list.get(0))
+                        .append(" --> ")
+                        .append(list.get(1))
+                        .append(": ")
+                        .append(getEvent(list.get(2)))
+                        .append("\n");
 
             }
         });
-        plantUML = plantUML.append("\n@enduml");
+        plantUML.append("\n@enduml");
     }
 
-    private String getEvent(String event){
+    private String getEvent(String event) {
         String eventValue = event;
-        if(event.contains(">")){
-            eventValue =  eventValue.replace("'>'","")
-                    .replace("[","")
+        if (event.contains(">")) {
+            eventValue = eventValue.replace("'>'", "")
+                    .replace("[", "")
                     .replace("]", "")
                     .replace(",", "");
         }

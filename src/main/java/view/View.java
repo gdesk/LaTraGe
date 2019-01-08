@@ -80,11 +80,10 @@ public class View extends JFrame implements ActionListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        inputField.setText("");
     }
 
     private void createImage() throws IOException {
-        String url = new PlantUMLUtilsImpl().generateImage();
+        String url = new PlantUMLUtilsImpl().generateImage(IMAGE_PATH);
         initialization.reset();
         setImagePane();
         setLink(url);
@@ -98,7 +97,7 @@ public class View extends JFrame implements ActionListener {
             this.image.revalidate();
             this.image.repaint();
         } catch (IOException ex) {
-            ex.getStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         imagePane.add(BorderLayout.CENTER, image);
         imagePane.validate();

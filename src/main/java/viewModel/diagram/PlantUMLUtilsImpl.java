@@ -16,11 +16,11 @@ public class PlantUMLUtilsImpl implements PlantUMLUtils {
     private PlantUMLInterpreter plantUMLinterpreter  = new PlantUMLInterpreterImpl();
 
     @Override
-    public String generateImage() throws IOException {
+    public String generateImage(String path) throws IOException {
         StringBuilder plantUmlSource = plantUMLinterpreter.createPlantUML();
         System.out.println("PlantUML: " + plantUmlSource.toString());
         SourceStringReader reader = new SourceStringReader(plantUmlSource.toString());
-        FileOutputStream output = new FileOutputStream(new File("LTSimage.png"));
+        FileOutputStream output = new FileOutputStream(new File(path));
         reader.generateImage(output);
         Transcoder t = TranscoderUtil.getDefaultTranscoder();
         String url = t.encode(plantUmlSource.toString());

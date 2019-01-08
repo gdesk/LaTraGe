@@ -80,7 +80,6 @@ public class View extends JFrame implements ActionListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        inputField.setText("");
     }
 
     private void createImage() throws IOException {

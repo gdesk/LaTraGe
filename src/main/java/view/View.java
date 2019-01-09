@@ -8,9 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 
@@ -46,7 +44,7 @@ public class View extends JFrame implements ActionListener {
         infoPane.add(inputField);
         processButton.addActionListener(this);
         infoPane.add(processButton);
-        newRuleButton.addActionListener(e -> ruleDisplay());
+        newRuleButton.addActionListener(e -> new RulePane().setVisible(true));
         infoPane.add(newRuleButton);
         exitButton.addActionListener(e -> System.exit(0));
         infoPane.add(exitButton);
@@ -64,43 +62,6 @@ public class View extends JFrame implements ActionListener {
         add(BorderLayout.NORTH, infoPane);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    private void ruleDisplay() {
-        JFrame d = new JFrame();
-        d.setSize(950,PANE_SIZE);
-        d.setResizable(false);
-
-        JPanel infoPanel = new JPanel();
-        JButton insertButton = new JButton("Insert");
-        infoPanel.add(insertButton);
-
-        JPanel textPanel = new JPanel();
-        JEditorPane textPane = new JEditorPane();
-        textPane.setSize(400, 1000);
-        textPanel.add(textPane);
-
-        JPanel prologRulesPanel = new JPanel();
-        JTextArea prologPane = new JTextArea();
-        JScrollPane scrollPane = new JScrollPane(prologRulesPanel);
-        prologPane.setSize(400, 100);
-        try {
-            String textLine = "";
-            FileReader fr = new FileReader("src/main/prolog/LTSOperators.pl");
-            BufferedReader reader = new BufferedReader(fr);
-            while((textLine = reader.readLine()) != null){
-                prologPane.read(reader, "jTextArea1");
-            }
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        prologRulesPanel.add(prologPane);
-
-        d.add(BorderLayout.EAST, scrollPane);
-        d.add(BorderLayout.WEST, textPanel);
-        d.add(BorderLayout.SOUTH, infoPanel);
-        d.setVisible(true);
     }
 
     @Override

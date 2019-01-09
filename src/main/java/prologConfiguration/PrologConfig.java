@@ -9,9 +9,7 @@ import java.io.IOException;
 
 public class PrologConfig {
 
-    public static Prolog  engine;
-
-    public PrologConfig(){}
+    public static Prolog engine;
 
     public PrologConfig(final String fileName) throws IOException, InvalidTheoryException {
         Theory theory = new Theory(new FileInputStream(fileName));

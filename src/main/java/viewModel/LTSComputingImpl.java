@@ -4,6 +4,7 @@ import alice.tuprolog.*;
 import model.*;
 import prologConfiguration.Java2Prolog;
 import prologConfiguration.Java2PrologImpl;
+import prologConfiguration.PrologConfig;
 import utils.Counter;
 import utils.CounterImpl;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class LTSComputingImpl implements LTSComputing {
                         String finalState = info.getTerm("FS").toString();
                         computeNewState(transitionState, event, finalState);
 
-                        while (java2Prolog.getEngine().hasOpenAlternatives()) {
+                        while (PrologConfig.engine.hasOpenAlternatives()) {
                             SolveInfo recursiveInfo = java2Prolog.getEngine().solveNext();
                             if (recursiveInfo.isSuccess()) {
                                 String recursiveEvent = recursiveInfo.getTerm("EV").toString();
@@ -58,7 +59,7 @@ public class LTSComputingImpl implements LTSComputing {
     public void reset() throws IOException, InvalidTheoryException{
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
         level = new CounterImpl(0);
-        java2Prolog = new Java2PrologImpl(PROLOG_PATH);
+        java2Prolog = new Java2PrologImpl();
     }
 
 

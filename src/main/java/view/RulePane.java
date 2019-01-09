@@ -1,19 +1,22 @@
 package view;
 
+import alice.tuprolog.Theory;
+import prologConfiguration.PrologConfig;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class RulePane extends JFrame implements ActionListener {
-    private static final int PANE_SIZE = 600;
+    private static final int FRAME_WIDTH_SIZE = 1300;
+    private static final int FRAME_HEIGHT_SIZE = 600;
+    private static final int PANE_WIDTH_SIZE = 400;
+    private static final int PANE_HEIGHT_SIZE = 1000;
     private JEditorPane textPane = new JEditorPane();
+    private JTextArea prologPane = new JTextArea();
 
     public RulePane() {
-        setSize(950,PANE_SIZE);
+        setSize(FRAME_WIDTH_SIZE, FRAME_HEIGHT_SIZE);
         setResizable(false);
 
         JPanel infoPanel = new JPanel();
@@ -22,24 +25,13 @@ public class RulePane extends JFrame implements ActionListener {
         infoPanel.add(insertButton);
 
         JPanel textPanel = new JPanel();
-        textPane.setSize(400, 1000);
+        textPane.setSize(PANE_WIDTH_SIZE, PANE_HEIGHT_SIZE);
         textPanel.add(textPane);
 
         JPanel prologRulesPanel = new JPanel();
-        JTextArea prologPane = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(prologRulesPanel);
-        prologPane.setSize(400, 100);
-        try {
-            String textLine = "";
-            FileReader fr = new FileReader("src/main/prolog/LTSOperators.pl");
-            BufferedReader reader = new BufferedReader(fr);
-            while((textLine = reader.readLine()) != null){
-                prologPane.read(reader, "prologRules");
-            }
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        prologPane.setSize(PANE_WIDTH_SIZE, PANE_HEIGHT_SIZE);
+        prologPane.setText(PrologConfig.engine.getTheory().toString());
         prologRulesPanel.add(prologPane);
 
         add(BorderLayout.EAST, scrollPane);
@@ -51,7 +43,13 @@ public class RulePane extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String text = textPane.getText();
         if(!text.isEmpty()){
-            System.out.println("HOLA");
+            try {
+                Theory theory = new Theory(text);
+                PrologConfig.engine.addTheory(theory);
+                prologPane.setText(PrologConfig.engine.getTheory().toString());
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

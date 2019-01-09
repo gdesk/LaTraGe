@@ -51,7 +51,8 @@ list2dot([H|T1], dot(H, dot(HH,T))):-
 This function return lists' head  
 first(+List, -FistElem, -List)
 */
-firstElemet([X|T],X, T).
+
+firstElement([X|T],X, T).
 
 /*
 This function is abstraction of the member method. Return all element present in a list. 
@@ -77,7 +78,7 @@ rule([plus(X, XS) | PP], EV, FS) :-
 	
 rule([dot(X) | PP], EV, FS):-
 	dot2list(dot(X), XSS),
-	firstElemet(XSS, C, T),
+	firstElement(XSS, C, T),
 	(atom(C)
 	-> EV = C, FS = 0
 	; rule([C|PP], EV, CFS),
@@ -85,7 +86,7 @@ rule([dot(X) | PP], EV, FS):-
 	FS=Y).
 rule([dot(X, XS) | PP], EV, FS):-
 	dot2list(dot(X, XS), XSS),
- 	firstElemet(XSS,C,T),
+ 	firstElement(XSS,C,T),
  	(atom(C) 
  	-> list2dot(T, LD),
  		EV=C,
@@ -98,10 +99,10 @@ rule([par(X, XS) | PP], EV, FS) :-
 	par2list(par(X, XS), XSS),
 	member(C, XSS, L, R),
 	(atom(C)
-	->EV=C, 
+	->EV=C,
 	append(L, [0], OUT),
 	append(OUT, R, OO),
 	list2par(OO, FS)
 	;	rule([C|PP], EV, CFS),
 	append(L, [CFS | R], OO),
-	list2par(OO, FS)).
+	list2par(OO, FS)).

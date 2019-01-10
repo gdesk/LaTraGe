@@ -1,8 +1,6 @@
 package prologConfiguration;
 
 import alice.tuprolog.*;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 /**
  * This class implements Java2Prolog
@@ -12,14 +10,12 @@ public class Java2PrologImpl implements Java2Prolog {
     private final static String MALFORMED_GOAL_MESSAGE = "ERROR - Malformed goal /n";
     private Prolog engine;
 
-    public Java2PrologImpl(final String fileName) throws InvalidTheoryException, IOException {
-        Theory theory = new Theory(new FileInputStream(fileName));
-        this.engine = new Prolog();
-        this.engine.setTheory(theory);
+    public Java2PrologImpl(){
+        engine = PrologConfig.engine;
     }
 
     @Override
-    public Prolog getEngine() {
+    public Prolog getEngine(){
         return engine;
     }
 

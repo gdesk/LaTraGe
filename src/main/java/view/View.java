@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-
 import viewModel.Initialization;
 import viewModel.diagram.PlantUMLUtilsImpl;
 import viewModel.InitializationImpl;
@@ -26,7 +25,6 @@ public class View extends JFrame implements ActionListener {
     private static final String IMAGE_PATH = "LTSImage.png";
     private static final JTextField inputField = new JTextField();
     private static final JTextField httpField = new JTextField();
-
     private static final JLabel input = new JLabel("Input: ");
     private static final JButton exitButton = new JButton("Exit");
     private static final JButton processButton = new JButton("Process");
@@ -45,6 +43,7 @@ public class View extends JFrame implements ActionListener {
         infoPane.add(inputField);
         processButton.addActionListener(this);
         infoPane.add(processButton);
+        newRuleButton.addActionListener(e -> new InsertRuleView().setVisible(true));
         infoPane.add(newRuleButton);
         exitButton.addActionListener(e -> System.exit(0));
         infoPane.add(exitButton);
@@ -80,11 +79,10 @@ public class View extends JFrame implements ActionListener {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        inputField.setText("");
     }
 
     private void createImage() throws IOException {
-        String url = new PlantUMLUtilsImpl().generateImage();
+        String url = new PlantUMLUtilsImpl().generateImage(IMAGE_PATH);
         initialization.reset();
         setImagePane();
         setLink(url);
@@ -98,7 +96,7 @@ public class View extends JFrame implements ActionListener {
             this.image.revalidate();
             this.image.repaint();
         } catch (IOException ex) {
-            ex.getStackTrace();
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         imagePane.add(BorderLayout.CENTER, image);
         imagePane.validate();

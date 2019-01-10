@@ -21,9 +21,6 @@ public interface LTSComputing {
 
     /**
      * reset to compute another process algebra
-     *
-     * @throws IOException IOException
-     * @throws InvalidTheoryException InvalidTheoryException
      */
-    void reset() throws IOException, InvalidTheoryException;
+    void reset();
 }

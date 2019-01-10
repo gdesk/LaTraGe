@@ -4,9 +4,9 @@ import alice.tuprolog.*;
 import model.*;
 import prologConfiguration.Java2Prolog;
 import prologConfiguration.Java2PrologImpl;
+import prologConfiguration.PrologConfig;
 import utils.Counter;
 import utils.CounterImpl;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,14 +14,13 @@ import java.util.List;
  */
 public class LTSComputingImpl implements LTSComputing {
 
-    private final static String PROLOG_PATH = "src/main/prolog/LTSOperators.pl";
     private final static int END = 0;
 
     private LabelTransitionSystemImpl labelTransitionSystem;
     private Java2Prolog java2Prolog;
     private Counter level;
 
-    public LTSComputingImpl() throws IOException, InvalidTheoryException {
+    public LTSComputingImpl() {
         reset();
     }
 
@@ -39,7 +38,7 @@ public class LTSComputingImpl implements LTSComputing {
                         String finalState = info.getTerm("FS").toString();
                         computeNewState(transitionState, event, finalState);
 
-                        while (java2Prolog.getEngine().hasOpenAlternatives()) {
+                        while (PrologConfig.engine.hasOpenAlternatives()) {
                             SolveInfo recursiveInfo = java2Prolog.getEngine().solveNext();
                             if (recursiveInfo.isSuccess()) {
                                 String recursiveEvent = recursiveInfo.getTerm("EV").toString();
@@ -55,10 +54,10 @@ public class LTSComputingImpl implements LTSComputing {
         }
     }
 
-    public void reset() throws IOException, InvalidTheoryException{
+    public void reset() {
         labelTransitionSystem = LabelTransitionSystemImpl.getInstance();
         level = new CounterImpl(0);
-        java2Prolog = new Java2PrologImpl(PROLOG_PATH);
+        java2Prolog = new Java2PrologImpl();
     }
 
 

@@ -11,8 +11,6 @@ public class PrologConfig {
 
     public static Prolog engine;
 
-    public PrologConfig(){}
-
     public PrologConfig(final String fileName) throws IOException, InvalidTheoryException {
         Theory theory = new Theory(new FileInputStream(fileName));
         this.engine = new Prolog();

@@ -7,15 +7,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RulePane extends JFrame implements ActionListener {
-    private static final int FRAME_WIDTH_SIZE = 1300;
+public class InsertRuleView extends JFrame implements ActionListener {
+    private static final int FRAME_WIDTH_SIZE = 930;
     private static final int FRAME_HEIGHT_SIZE = 600;
     private static final int PANE_WIDTH_SIZE = 400;
     private static final int PANE_HEIGHT_SIZE = 1000;
     private JEditorPane textPane = new JEditorPane();
-    private JTextArea prologPane = new JTextArea();
+    private JEditorPane prologPane = new JEditorPane();
 
-    public RulePane() {
+    public InsertRuleView() {
         setSize(FRAME_WIDTH_SIZE, FRAME_HEIGHT_SIZE);
         setResizable(false);
 
@@ -31,7 +31,9 @@ public class RulePane extends JFrame implements ActionListener {
         JPanel prologRulesPanel = new JPanel();
         JScrollPane scrollPane = new JScrollPane(prologRulesPanel);
         prologPane.setSize(PANE_WIDTH_SIZE, PANE_HEIGHT_SIZE);
-        prologPane.setText(PrologConfig.engine.getTheory().toString());
+        prologPane.setEnabled(false);
+        prologPane.setDisabledTextColor(Color.BLACK);
+        prologPane.setText(String.valueOf(PrologConfig.engine.getTheory()));
         prologRulesPanel.add(prologPane);
 
         add(BorderLayout.EAST, scrollPane);

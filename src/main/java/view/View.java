@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
-import alice.tuprolog.InvalidTheoryException;
 import viewModel.Initialization;
 import viewModel.diagram.PlantUMLUtilsImpl;
 import viewModel.InitializationImpl;
@@ -45,13 +44,7 @@ public class View extends JFrame implements ActionListener {
         infoPane.add(inputField);
         processButton.addActionListener(this);
         infoPane.add(processButton);
-        newRuleButton.addActionListener(e -> {
-            try {
-                new RulePane().setVisible(true);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        });
+        newRuleButton.addActionListener(e -> new InsertRuleView().setVisible(true));
         infoPane.add(newRuleButton);
         exitButton.addActionListener(e -> System.exit(0));
         infoPane.add(exitButton);

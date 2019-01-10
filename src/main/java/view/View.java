@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-
 import viewModel.Initialization;
 import viewModel.diagram.PlantUMLUtilsImpl;
 import viewModel.InitializationImpl;

@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class manages the frame to insert the new prolog's rule
+ */
 public class InsertRuleView extends JFrame implements ActionListener {
     private static final int FRAME_WIDTH_SIZE = 930;
     private static final int FRAME_HEIGHT_SIZE = 600;
@@ -49,8 +52,8 @@ public class InsertRuleView extends JFrame implements ActionListener {
                 Theory theory = new Theory(text);
                 PrologConfig.engine.addTheory(theory);
                 prologPane.setText(PrologConfig.engine.getTheory().toString());
-            } catch (Exception e1) {
-                e1.printStackTrace();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

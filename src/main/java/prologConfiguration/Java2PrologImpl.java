@@ -1,8 +1,6 @@
 package prologConfiguration;
 
 import alice.tuprolog.*;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 /**
  * This class implements Java2Prolog

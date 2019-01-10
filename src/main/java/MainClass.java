@@ -9,7 +9,7 @@ public class MainClass {
 
     public static void main(String [ ] args) {
         try {
-            PrologConfig prologConfig = new PrologConfig(PROLOG_PATH);
+            new PrologConfig(PROLOG_PATH);
         } catch (Exception e) {
             e.printStackTrace();
         }

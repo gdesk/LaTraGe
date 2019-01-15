@@ -1,114 +1,124 @@
-% Operators definitions
+:- op(990, xfx, matches).
+:- op(500, yfx, "u").
+
 :- op(550, yfx, "par").
 :- op(525, yfx, "dot").
 :- op(500, yfx, "plus").
 
-/* 
-This function converts parallel operator's sequence into process's sequence.
-par2list(+sequence of parallel operator, -process parallel's list).
-*/
-par2list(par(0),0),!.
-par2list(par(X),[X]).
-par2list(par(X,Y), [X|Z]):-
-	par2list(Y,Z).
+commutative('plus').
+commutative('u').
+commutative('par').
 
-/* 
-This function converts dot operator's sequence into process's sequence.
-dot2list(+sequence of dot operator, -process dot's list).
-*/
-dot2list(dot(X),[X]).
-dot2list(dot(H, dot(HH)),[H,HH]).
-dot2list(dot(H, dot(HH,T)),[H|T1]):-
-	dot2list(dot(HH,T),T1).
+associative('plus').
+associative('u').
+associative('par').
+associative('dot').
 
-/* 
-This function converts plus operator's sequence into process's sequence.
-plus2lit(?sequence of plus operator, ?process plus's list).
-*/
-plus2list(plus(H, plus(HH)),[H,HH]).
-plus2list(plus(H, plus(HH,T)),[H|T1]):-
-	plus2list(plus(HH,T),T1).
+neutral('plus', no_choice).
+neutral('dot', pass).
+neutral('u', empty).
 
-/*
-This function converts the process's sequence into parallel operator's sequence.
-list2par(+process parallel's list, -sequence of parallel operator).
-*/
-list2par([H], par(H)).
-list2par([H,HH], par(H, par(HH))).
-list2par([H|T1], par(H, par(HH,T))):-
- list2par(T1, par(HH,T)).
+operator(X) :- commutative(X); associative(X).
 
-/*
-This function converts the process's sequence into dot operator's sequence.
-list2dot(+process dot's list, -sequence of dot operator).
-*/
-list2dot([H], dot(H)):- !.
-list2dot([H,HH], dot(H, dot(HH))):- !.
-list2dot([H|T1], dot(H, dot(HH,T))):-
- list2dot(T1, dot(HH,T)).
 
-/* 
-This function return lists' head  
-first(+ListInput, -FistElem, -RemainList)
-*/
-firstElement([X|T],X, T).
+matches(X, X).
 
-/*
-This function is abstraction of the member method. Return all element present in a list. 
-There are:
-- right list: contains all the elements that appear before +Elem
-- left list: contains all the elements that appear after +Elem
-member(-Elem, +List, -RightList, -LeftList).
-*/
-member(E, [E | Xs], [], Xs).
-member(E, [X | Xs], [X | L], R) :-
-    member(E, Xs, L, R).
+matches(X, Y) :-
+  (X =.. [Op, X1, X2], Y =.. [Op, Y1, Y2];
+  Y =.. [Op, Y1, Y2], X =.. [Op, X1, X2]),
+  matches(X1, Y1), 
+  matches(X2, Y2), !.
 
-/*
-This functions implements all operations' rules
-rule(+InitialState, -Event, -FinalState)
-*/
-rule([plus(X, XS) | PP], EV, FS) :-
-	plus2list(plus(X, XS), XSS),
-	member(C, XSS),
-	(atom(C)
-	->EV=C, FS = 0
-	;rule([C | PP], EV, FS)).
-	
-rule([dot(X) | PP], EV, FS):-
-	dot2list(dot(X), XSS),
-	firstElement(XSS, C, T),
-	(atom(C)
-	-> EV = C, FS = 0
-	; rule([C|PP], EV, CFS),
-	list2dot([CFS | T], Y),
-	FS=Y).
-rule([dot(X, XS) | PP], EV, FS):-
-	dot2list(dot(X, XS), XSS),
- 	firstElement(XSS,C,T),
- 	(atom(C) 
- 	-> list2dot(T, LD),
- 		EV=C,
-   	FS=LD
- 	; rule([C|PP], EV, CFS),
- 	list2dot([CFS | T], Y),
- 	FS=Y).
+matches(X, Y) :-
+  (X =.. [Op, X1, X2], Y =.. [Op, Y1, Y2];
+  Y =.. [Op, Y1, Y2], X =.. [Op, X1, X2]),
+  commutative(Op),
+  matches(X1, Y2), 
+  matches(X2, Y1).
 
-rule([par(X, XS) | PP], EV, FS) :-
-	select(par(X, XS), C, L, R),
-	(atom(C)
-	->EV=C,
-	append(L, [0], OUT),
-	append(OUT, R, OO),
-	list2par(OO, FS)
-	;	rule([C|PP], EV, CFS),
-	append(L, [CFS | R], OO),
-	list2par(OO, FS)).
+matches(X, Y) :-
+  X =.. [Op, A, B],
+  neutral(Op, Z),
+  member(Z, [A, B]),
+  delete(Z, [A, B], [X1]),
+  matches(X1, Y).
 
-/*
-This predicate selects the element into all processes
-select(+parSequence, -currentElem, -LeftList, - RightList)
-*/
-select(X, C, L, R):-
-	par2list(X, XSS),
-	member(C, XSS, L, R).
+matches(X, Y) :-
+  Y =.. [Op, A, B],
+  neutral(Op, Z),
+  member(Z, [A, B]),
+  delete(Z, [A, B], [Y1]),
+  matches(X, Y1).
+
+matches(X, Y) :-
+  X =.. [Op, A, B],
+  associative(Op),
+  Y =.. [Op, Y1, Y2],
+  A =.. [Op, C, D],
+  A1 =.. [Op, D, B],
+  matches(C, Y1),
+  matches(A1, Y2).
+
+matches(X, Y) :-
+  X =.. [Op, A, B],
+  associative(Op),
+  Y =.. [Op, Y1, Y2],
+  B =.. [Op, C, D],
+  B1 =.. [Op, D, B],
+  matches(A, Y1),
+  matches(B1, Y2).
+
+matches(X, Y) :-
+  Y =.. [Op, A, B],
+  associative(Op),
+  X =.. [Op, X1, X2],
+  A =.. [Op, C, D],
+  A1 =.. [Op, D, B],
+  matches(X1, C),
+  matches(X2, A1).
+
+matches(X, Y) :-
+  Y =.. [Op, A, B],
+  associative(Op),
+  X =.. [Op, X1, X2],
+  B =.. [Op, C, D],
+  B1 =.. [Op, D, B],
+  matches(X1, A),
+  matches(X2, B1).
+
+rule(S, E, D) :- rule(S, E, _, D).
+
+rule(S, E, R, D) :-
+  rule(R),
+  Goal =.. [R, S, E, D],
+  Goal.
+
+rule(out).
+out(Source, event(out(T)), Dest) :-
+  Source matches (out(T) dot P par Ps par TS),
+  ground(T),
+  Dest = (P par Ps par TS u T).
+
+rule(in).
+in(Source, event(in(T)), Dest) :-
+  Source matches (in(T) dot P par Ps par TS u T),
+  T \= empty,
+  Dest = (P par Ps par TS).
+
+rule(rd).
+rd(Source, event(rd(T)), Dest) :-
+  Source matches (rd(T) dot P dot Ps dot TS u T),
+  T \= empty,
+  Dest = (P par Ps par TS u T).
+
+rule(choice_l).
+choice_l(Source, E, Dest) :-
+  Source matches ((A plus _) dot P par Ps par TS),
+  rule((A dot P par Ps par TS), E, Dest).
+
+rule(choice_r).
+choice_r(Source, E, Dest) :-
+  Source matches ((_ plus B) dot P par Ps par TS),
+  rule((B dot P par Ps par TS), E, Dest).
+
+% rule((in(T) dot stop par out(t) dot stop par empty), E, D).

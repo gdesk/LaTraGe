@@ -1,4 +1,4 @@
-# DSproject
+# LaTraGe - Label Transition system Generator 
 Project for the course of "[Distributed Systems](https://www.unibo.it/en/teaching/course-unit-catalogue/course-unit/2019/412591)" AA.2018/2019
 
 ## Getting started

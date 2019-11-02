@@ -1,8 +1,19 @@
-% Operators definitions
+/* Operators' definition */
 :- op(550, yfx, "par").
 :- op(525, yfx, "dot").
 :- op(500, yfx, "plus").
 
+
+/*General base rule to process the AdP
+ rule(+initialState, -Event, -FinalState)*/
+rule(S, E, D) :- rule(S, E, _, D).
+ 
+/*rule(+initialState, -Event, -Action, -FinalState)*/
+rule(S, E, R, D) :-
+  rule(R),
+  Goal =.. [R, S, E, D],
+  Goal.
+  
 /* 
 This function converts parallel operator's sequence into process's sequence.
 par2list(+sequence of parallel operator, -process parallel's list).
@@ -68,40 +79,41 @@ member(E, [X | Xs], [X | L], R) :-
 This functions implements all operations' rules
 rule(+InitialState, -Event, -FinalState)
 */
-rule([plus(X, XS) | PP], EV, FS) :-
+rule(ruleBasic).
+ruleBasic(plus(X, XS), EV, FS) :-
 	plus2list(plus(X, XS), XSS),
 	member(C, XSS),
 	(atom(C)
 	->EV=C, FS = 0
-	;rule([C | PP], EV, FS)).
+	;ruleBasic(C, EV, FS)).
 	
-rule([dot(X) | PP], EV, FS):-
+ruleBasic(dot(X), EV, FS):-
 	dot2list(dot(X), XSS),
 	firstElement(XSS, C, T),
 	(atom(C)
 	-> EV = C, FS = 0
-	; rule([C|PP], EV, CFS),
+	; ruleBasic(C, EV, CFS),
 	list2dot([CFS | T], Y),
 	FS=Y).
-rule([dot(X, XS) | PP], EV, FS):-
+ruleBasic(dot(X, XS), EV, FS):-
 	dot2list(dot(X, XS), XSS),
  	firstElement(XSS,C,T),
  	(atom(C) 
  	-> list2dot(T, LD),
  		EV=C,
    	FS=LD
- 	; rule([C|PP], EV, CFS),
+ 	; ruleBasic(C, EV, CFS),
  	list2dot([CFS | T], Y),
  	FS=Y).
 
-rule([par(X, XS) | PP], EV, FS) :-
+ruleBasic(par(X, XS), EV, FS) :-
 	select(par(X, XS), C, L, R),
 	(atom(C)
 	->EV=C,
 	append(L, [0], OUT),
 	append(OUT, R, OO),
 	list2par(OO, FS)
-	;	rule([C|PP], EV, CFS),
+	;	ruleBasic(C, EV, CFS),
 	append(L, [CFS | R], OO),
 	list2par(OO, FS)).
 
@@ -112,3 +124,4 @@ select(+parSequence, -currentElem, -LeftList, - RightList)
 select(X, C, L, R):-
 	par2list(X, XSS),
 	member(C, XSS, L, R).
+

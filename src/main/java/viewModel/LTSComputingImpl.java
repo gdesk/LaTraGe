@@ -29,7 +29,7 @@ public class LTSComputingImpl implements LTSComputing {
             List<TransitionState> listAtLevel = labelTransitionSystem.getTransitionList(level.getCounter());
             if (!(listAtLevel.isEmpty())) {
                 for (TransitionState transitionState : listAtLevel) {
-                    String input = "[" + transitionState.getFinalState().getValueState() + "," + END + "]";
+                    String input = transitionState.getFinalState().getValueState();
                     String goal = "rule(" + input + ", EV, FS).";
                     SolveInfo info = java2Prolog.solveGoal(goal);
 

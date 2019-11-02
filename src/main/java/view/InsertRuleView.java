@@ -29,6 +29,7 @@ public class InsertRuleView extends JFrame implements ActionListener {
 
         JPanel textPanel = new JPanel();
         textPane.setSize(PANE_WIDTH_SIZE, PANE_HEIGHT_SIZE);
+        JScrollPane scrollPaneInput = new JScrollPane(textPanel);
         textPanel.add(textPane);
 
         JPanel prologRulesPanel = new JPanel();
@@ -40,7 +41,7 @@ public class InsertRuleView extends JFrame implements ActionListener {
         prologRulesPanel.add(prologPane);
 
         add(BorderLayout.EAST, scrollPane);
-        add(BorderLayout.WEST, textPanel);
+        add(BorderLayout.WEST, scrollPaneInput);
         add(BorderLayout.SOUTH, infoPanel);
     }
 

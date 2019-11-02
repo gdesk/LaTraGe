@@ -12,7 +12,7 @@ Java 1.8 https://www.java.com/it/download/faq/java8.xmln
 tuProlog 3.2 https://bitbucket.org/tuprologteam/tuprolog/downloads/
 
 ## Documentation
-A brief presentation of the system can be found in [doc folder]()
+A brief presentation of the system can be found in [doc folder](https://github.com/chiara-volonnino/LaTraGe/tree/master/doc)
 
 ## Team members
 - Chiara Volonnino (chiara.volonnino@studio.unibo.it)

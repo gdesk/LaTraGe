@@ -2,7 +2,9 @@
 Project for the course of "[Distributed Systems](https://www.unibo.it/en/teaching/course-unit-catalogue/course-unit/2019/412591)" AA.2018/2019
 
 ## Getting started
-This system is able to produce an entire graph of states, starting from the description of a concurrent/distributed system by process algebra.
+This project deals with algebra of processes, that is a formalism that allows to model concurrent and distributed systems.
+
+The goal is to create a system that produces entire state graph, starting from the description of a concurrent / distributed system using process algebra. To test our system on a no trivial model we have added an extension to the basic Prolog rules that would allow integration with a model of coordination and communication used in literature called Linda.
 
 A small user guide to use this program is present in a section *appendix A* in a report. It's consulted in *doc* folder.
 
